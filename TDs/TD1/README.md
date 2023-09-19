@@ -83,7 +83,7 @@ ldd ./bin
 
 ```bash
 ~/gcc12.2.0/bin/gcc -c -fpic vector.c compute.c
-
+```
 
 ## Partie 2
 
