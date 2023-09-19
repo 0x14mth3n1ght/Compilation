@@ -1,0 +1,177 @@
+
+;; Function saxpy (saxpy, funcdef_no=22, decl_uid=3008, cgraph_uid=23, symbol_order=22)
+
+pointer_query counters:
+  index cache size:   0
+  index entries:      0
+  access cache size:  0
+  access entries:     0
+  hits:               0
+  misses:             4
+  failures:           0
+  max_depth:          1
+void saxpy (int * res, int * x, int * y, int a, int size)
+{
+  int i;
+  long unsigned int _1;
+  long unsigned int _2;
+  int * _3;
+  int _4;
+  int _5;
+  long unsigned int _6;
+  long unsigned int _7;
+  int * _8;
+  int _9;
+  long unsigned int _10;
+  long unsigned int _11;
+  int * _12;
+  int _13;
+
+  <bb 2> :
+  i_16 = 0;
+  goto <bb 4>; [INV]
+
+  <bb 3> :
+  _1 = (long unsigned int) i_14;
+  _2 = _1 * 4;
+  _3 = x_19(D) + _2;
+  _4 = *_3;
+  _5 = a_20(D) * _4;
+  _6 = (long unsigned int) i_14;
+  _7 = _6 * 4;
+  _8 = y_21(D) + _7;
+  _9 = *_8;
+  _10 = (long unsigned int) i_14;
+  _11 = _10 * 4;
+  _12 = res_22(D) + _11;
+  _13 = _5 + _9;
+  *_12 = _13;
+  i_24 = i_14 + 1;
+
+  <bb 4> :
+  # i_14 = PHI <i_16(2), i_24(3)>
+  if (i_14 < size_18(D))
+    goto <bb 3>; [INV]
+  else
+    goto <bb 5>; [INV]
+
+  <bb 5> :
+  return;
+
+}
+
+
+
+;; Function main (main, funcdef_no=23, decl_uid=3017, cgraph_uid=24, symbol_order=23)
+
+pointer_query counters:
+  index cache size:   0
+  index entries:      0
+  access cache size:  0
+  access entries:     0
+  hits:               0
+  misses:             10
+  failures:           0
+  max_depth:          1
+__attribute__((access ("^1[ ]", )))
+int main (int argc, char * * argv)
+{
+  int a;
+  int * y;
+  int * x;
+  int * res;
+  int size;
+  int i;
+  long unsigned int _1;
+  long unsigned int _2;
+  long unsigned int _3;
+  long unsigned int _4;
+  long unsigned int _5;
+  long unsigned int _6;
+  long unsigned int _7;
+  long unsigned int _8;
+  int * _9;
+  int _10;
+  long unsigned int _11;
+  long unsigned int _12;
+  int * _13;
+  long unsigned int _14;
+  long unsigned int _15;
+  int * _16;
+  int _17;
+  int _18;
+  int _19;
+  int _37;
+
+  <bb 2> :
+  size_25 = 100;
+  a_26 = 2;
+  _1 = (long unsigned int) size_25;
+  _2 = _1 * 4;
+  res_29 = malloc (_2);
+  _3 = (long unsigned int) size_25;
+  _4 = _3 * 4;
+  x_31 = malloc (_4);
+  _5 = (long unsigned int) size_25;
+  _6 = _5 * 4;
+  y_33 = malloc (_6);
+  i_34 = 0;
+  goto <bb 4>; [INV]
+
+  <bb 3> :
+  _7 = (long unsigned int) i_20;
+  _8 = _7 * 4;
+  _9 = x_31 + _8;
+  _10 = i_20 + 50;
+  *_9 = _10;
+  _11 = (long unsigned int) i_20;
+  _12 = _11 * 4;
+  _13 = y_33 + _12;
+  *_13 = i_20;
+  i_43 = i_20 + 1;
+
+  <bb 4> :
+  # i_20 = PHI <i_34(2), i_43(3)>
+  if (i_20 < size_25)
+    goto <bb 3>; [INV]
+  else
+    goto <bb 5>; [INV]
+
+  <bb 5> :
+  saxpy (res_29, x_31, y_33, a_26, size_25);
+  i_36 = 0;
+  goto <bb 9>; [INV]
+
+  <bb 6> :
+  _14 = (long unsigned int) i_21;
+  _15 = _14 * 4;
+  _16 = res_29 + _15;
+  _17 = *_16;
+  printf ("res[%d] = %d ; ", i_21, _17);
+  _18 = i_21 + 1;
+  _19 = _18 % 10;
+  if (_19 == 0)
+    goto <bb 7>; [INV]
+  else
+    goto <bb 8>; [INV]
+
+  <bb 7> :
+  __builtin_putchar (10);
+
+  <bb 8> :
+  i_40 = i_21 + 1;
+
+  <bb 9> :
+  # i_21 = PHI <i_36(5), i_40(8)>
+  if (i_21 <= 99)
+    goto <bb 6>; [INV]
+  else
+    goto <bb 10>; [INV]
+
+  <bb 10> :
+  _37 = 1;
+  return _37;
+
+}
+
+

@@ -1,0 +1,9 @@
+CC=gcc 
+
+1-vector: main.o
+	$(CC) -o $@ $^
+
+main.o: compute.o timer.o vector.o
+compute.o: compute.h
+timer.o: timer.h
+vector.o: vector.h	

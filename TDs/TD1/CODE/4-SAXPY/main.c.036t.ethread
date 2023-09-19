@@ -1,0 +1,180 @@
+
+;; Function saxpy (saxpy, funcdef_no=22, decl_uid=3008, cgraph_uid=23, symbol_order=22)
+
+;; 2 loops found
+;;
+;; Loop 0
+;;  header 0, latch 1
+;;  depth 0, outer -1
+;;  nodes: 0 1 2 3 4 5
+;;
+;; Loop 1
+;;  header 4, latch 3
+;;  depth 1, outer 0
+;;  nodes: 4 3
+;; 2 succs { 4 }
+;; 3 succs { 4 }
+;; 4 succs { 3 5 }
+;; 5 succs { 1 }
+void saxpy (int * res, int * x, int * y, int a, int size)
+{
+  int i;
+  long unsigned int _1;
+  long unsigned int _2;
+  int * _3;
+  int _4;
+  int _5;
+  long unsigned int _6;
+  long unsigned int _7;
+  int * _8;
+  int _9;
+  long unsigned int _10;
+  long unsigned int _11;
+  int * _12;
+  int _13;
+
+  <bb 2> :
+  goto <bb 4>; [INV]
+
+  <bb 3> :
+  _1 = (long unsigned int) i_14;
+  _2 = _1 * 4;
+  _3 = x_19(D) + _2;
+  _4 = *_3;
+  _5 = _4 * a_20(D);
+  _6 = (long unsigned int) i_14;
+  _7 = _6 * 4;
+  _8 = y_21(D) + _7;
+  _9 = *_8;
+  _10 = (long unsigned int) i_14;
+  _11 = _10 * 4;
+  _12 = res_22(D) + _11;
+  _13 = _5 + _9;
+  *_12 = _13;
+  i_24 = i_14 + 1;
+
+  <bb 4> :
+  # i_14 = PHI <0(2), i_24(3)>
+  if (i_14 < size_18(D))
+    goto <bb 3>; [INV]
+  else
+    goto <bb 5>; [INV]
+
+  <bb 5> :
+  return;
+
+}
+
+
+
+;; Function main (main, funcdef_no=23, decl_uid=3017, cgraph_uid=24, symbol_order=23)
+
+;; 3 loops found
+;;
+;; Loop 0
+;;  header 0, latch 1
+;;  depth 0, outer -1
+;;  nodes: 0 1 2 3 4 5 6 7 8 9 10
+;;
+;; Loop 2
+;;  header 9, latch 8
+;;  depth 1, outer 0
+;;  nodes: 9 8 6 7
+;;
+;; Loop 1
+;;  header 4, latch 3
+;;  depth 1, outer 0
+;;  nodes: 4 3
+;; 2 succs { 4 }
+;; 3 succs { 4 }
+;; 4 succs { 3 5 }
+;; 5 succs { 9 }
+;; 6 succs { 7 8 }
+;; 7 succs { 8 }
+;; 8 succs { 9 }
+;; 9 succs { 6 10 }
+;; 10 succs { 1 }
+__attribute__((access ("^1[ ]", )))
+int main (int argc, char * * argv)
+{
+  int a;
+  int * y;
+  int * x;
+  int * res;
+  int size;
+  int i;
+  long unsigned int _7;
+  long unsigned int _8;
+  int * _9;
+  int _10;
+  long unsigned int _11;
+  long unsigned int _12;
+  int * _13;
+  long unsigned int _14;
+  long unsigned int _15;
+  int * _16;
+  int _17;
+  int _18;
+  int _19;
+
+  <bb 2> :
+  res_29 = malloc (400);
+  x_31 = malloc (400);
+  y_33 = malloc (400);
+  goto <bb 4>; [INV]
+
+  <bb 3> :
+  _7 = (long unsigned int) i_20;
+  _8 = _7 * 4;
+  _9 = x_31 + _8;
+  _10 = i_20 + 50;
+  *_9 = _10;
+  _11 = (long unsigned int) i_20;
+  _12 = _11 * 4;
+  _13 = y_33 + _12;
+  *_13 = i_20;
+  i_43 = i_20 + 1;
+
+  <bb 4> :
+  # i_20 = PHI <0(2), i_43(3)>
+  if (i_20 <= 99)
+    goto <bb 3>; [INV]
+  else
+    goto <bb 5>; [INV]
+
+  <bb 5> :
+  saxpy (res_29, x_31, y_33, 2, 100);
+  goto <bb 9>; [INV]
+
+  <bb 6> :
+  _14 = (long unsigned int) i_21;
+  _15 = _14 * 4;
+  _16 = res_29 + _15;
+  _17 = *_16;
+  printf ("res[%d] = %d ; ", i_21, _17);
+  _18 = i_21 + 1;
+  _19 = _18 % 10;
+  if (_19 == 0)
+    goto <bb 7>; [INV]
+  else
+    goto <bb 8>; [INV]
+
+  <bb 7> :
+  __builtin_putchar (10);
+
+  <bb 8> :
+  i_40 = i_21 + 1;
+
+  <bb 9> :
+  # i_21 = PHI <0(5), i_40(8)>
+  if (i_21 <= 99)
+    goto <bb 6>; [INV]
+  else
+    goto <bb 10>; [INV]
+
+  <bb 10> :
+  return 1;
+
+}
+
+

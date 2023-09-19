@@ -1,0 +1,251 @@
+
+;; Function saxpy (saxpy, funcdef_no=22, decl_uid=3008, cgraph_uid=23, symbol_order=22)
+
+
+
+modref analyzing 'saxpy/22' (ipa=0)
+Analyzing flags of ssa name: res_22(D)
+  Analyzing stmt: _12 = res_22(D) + _2;
+    Analyzing flags of ssa name: _12
+      Analyzing stmt: *_12 = _13;
+      current flags of _12 no_indirect_clobber no_direct_escape no_indirect_escape not_returned_directly not_returned_indirectly no_direct_read no_indirect_read
+    flags of ssa name _12 no_indirect_clobber no_direct_escape no_indirect_escape not_returned_directly not_returned_indirectly no_direct_read no_indirect_read
+  current flags of res_22(D) no_indirect_clobber no_direct_escape no_indirect_escape not_returned_directly not_returned_indirectly no_direct_read no_indirect_read
+flags of ssa name res_22(D) no_indirect_clobber no_direct_escape no_indirect_escape not_returned_directly not_returned_indirectly no_direct_read no_indirect_read
+Analyzing flags of ssa name: x_19(D)
+  Analyzing stmt: _3 = x_19(D) + _2;
+    Analyzing flags of ssa name: _3
+      Analyzing stmt: _4 = *_3;
+        Analyzing flags of ssa name: _4
+          Analyzing stmt: _5 = _4 * a_20(D);
+            Analyzing flags of ssa name: _5
+              Analyzing stmt: _13 = _5 + _9;
+                Analyzing flags of ssa name: _13
+                  Analyzing stmt: *_12 = _13;
+                  ssa name saved to memory
+                  current flags of _13
+                flags of ssa name _13
+              current flags of _5
+            flags of ssa name _5
+          current flags of _4
+        flags of ssa name _4
+      current flags of _3 no_direct_clobber no_direct_escape not_returned_directly
+    flags of ssa name _3 no_direct_clobber no_direct_escape not_returned_directly
+  current flags of x_19(D) no_direct_clobber no_direct_escape not_returned_directly
+flags of ssa name x_19(D) no_direct_clobber no_direct_escape not_returned_directly
+Analyzing flags of ssa name: y_21(D)
+  Analyzing stmt: _8 = y_21(D) + _2;
+    Analyzing flags of ssa name: _8
+      Analyzing stmt: _9 = *_8;
+        Analyzing flags of ssa name: _9
+          Analyzing stmt: _13 = _5 + _9;
+          current flags of _9
+        flags of ssa name _9
+      current flags of _8 no_direct_clobber no_direct_escape not_returned_directly
+    flags of ssa name _8 no_direct_clobber no_direct_escape not_returned_directly
+  current flags of y_21(D) no_direct_clobber no_direct_escape not_returned_directly
+flags of ssa name y_21(D) no_direct_clobber no_direct_escape not_returned_directly
+Analyzing flags of ssa name: a_20(D)
+  Analyzing stmt: _5 = _4 * a_20(D);
+  current flags of a_20(D)
+flags of ssa name a_20(D)
+Analyzing flags of ssa name: size_18(D)
+  Analyzing stmt: if (i_14 < size_18(D))
+  current flags of size_18(D) no_direct_clobber no_indirect_clobber no_direct_escape no_indirect_escape not_returned_directly not_returned_indirectly no_direct_read no_indirect_read
+flags of ssa name size_18(D) no_direct_clobber no_indirect_clobber no_direct_escape no_indirect_escape not_returned_directly not_returned_indirectly no_direct_read no_indirect_read
+ - Analyzing load: *_3
+   - Recording base_set=0 ref_set=0  Parm 1
+ - Analyzing load: *_8
+   - Recording base_set=0 ref_set=0  Parm 2
+ - Analyzing store: *_12
+   - Recording base_set=0 ref_set=0  Parm 0
+;; 2 loops found
+;;
+;; Loop 0
+;;  header 0, latch 1
+;;  depth 0, outer -1
+;;  nodes: 0 1 2 3 4 5
+;;
+;; Loop 1
+;;  header 4, latch 3
+;;  depth 1, outer 0
+;;  nodes: 4 3
+;; 2 succs { 4 }
+;; 3 succs { 4 }
+;; 4 succs { 3 5 }
+;; 5 succs { 1 }
+ - modref done with result: tracked.
+  loads:
+      Base 0: alias set 0
+        Ref 0: alias set 0
+          access: Parm 1
+          access: Parm 2
+  stores:
+      Base 0: alias set 0
+        Ref 0: alias set 0
+          access: Parm 0
+  parm 0 flags: no_indirect_clobber no_direct_escape no_indirect_escape no_direct_read no_indirect_read
+  parm 1 flags: no_direct_clobber no_direct_escape
+  parm 2 flags: no_direct_clobber no_direct_escape
+  parm 4 flags: no_direct_clobber no_indirect_clobber no_direct_escape no_indirect_escape no_direct_read no_indirect_read
+void saxpy (int * res, int * x, int * y, int a, int size)
+{
+  int i;
+  long unsigned int _1;
+  long unsigned int _2;
+  int * _3;
+  int _4;
+  int _5;
+  int * _8;
+  int _9;
+  int * _12;
+  int _13;
+
+  <bb 2> [local count: 118111600]:
+  goto <bb 4>; [100.00%]
+
+  <bb 3> [local count: 955630225]:
+  _1 = (long unsigned int) i_14;
+  _2 = _1 * 4;
+  _3 = x_19(D) + _2;
+  _4 = *_3;
+  _5 = _4 * a_20(D);
+  _8 = y_21(D) + _2;
+  _9 = *_8;
+  _12 = res_22(D) + _2;
+  _13 = _5 + _9;
+  *_12 = _13;
+  i_24 = i_14 + 1;
+
+  <bb 4> [local count: 1073741824]:
+  # i_14 = PHI <0(2), i_24(3)>
+  if (i_14 < size_18(D))
+    goto <bb 3>; [89.00%]
+  else
+    goto <bb 5>; [11.00%]
+
+  <bb 5> [local count: 118111600]:
+  return;
+
+}
+
+
+
+;; Function main (main, funcdef_no=23, decl_uid=3017, cgraph_uid=24, symbol_order=23) (executed once)
+
+
+
+modref analyzing 'main/23' (ipa=0)
+ - Analyzing call:res_29 = malloc (400);
+ - Function availability <= AVAIL_INTERPOSABLE.
+ - Analyzing call:x_31 = malloc (400);
+ - Function availability <= AVAIL_INTERPOSABLE.
+ - Analyzing call:y_33 = malloc (400);
+ - Function availability <= AVAIL_INTERPOSABLE.
+ - Analyzing store: *_9
+   - Read-only or local, ignoring.
+ - Analyzing store: *_13
+   - Read-only or local, ignoring.
+ - Analyzing call:saxpy (res_29, x_31, y_33, 2, 100);
+ - Merging side effects of saxpy/22
+   Parm map: -5 -5 -5 -1 -1
+ - Analyzing load: *_16
+   - Read-only or local, ignoring.
+ - Analyzing call:printf ("res[%d] = %d ; ", i_21, _17);
+ - Function availability <= AVAIL_INTERPOSABLE.
+      Builtin with no fnspec: printf
+ - Analyzing call:__builtin_putchar (10);
+ - Function availability <= AVAIL_INTERPOSABLE.
+      Builtin with no fnspec: __builtin_putchar
+ - modref done with result: tracked.
+  loads:
+    Every base
+  stores:
+    Every base
+  Writes errno
+  Side effects
+  Nondeterministic
+  Global memory read
+  Global memory written
+  parm 0 flags: unused
+  parm 1 flags: unused
+__attribute__((access ("^1[ ]", )))
+int main (int argc, char * * argv)
+{
+  int a;
+  int * y;
+  int * x;
+  int * res;
+  int size;
+  int i;
+  long unsigned int _7;
+  long unsigned int _8;
+  int * _9;
+  int _10;
+  int * _13;
+  long unsigned int _14;
+  long unsigned int _15;
+  int * _16;
+  int _17;
+  int _18;
+  int _19;
+
+  <bb 2> [local count: 10737416]:
+  res_29 = malloc (400);
+  x_31 = malloc (400);
+  y_33 = malloc (400);
+  goto <bb 4>; [100.00%]
+
+  <bb 3> [local count: 1063004409]:
+  _7 = (long unsigned int) i_20;
+  _8 = _7 * 4;
+  _9 = x_31 + _8;
+  _10 = i_20 + 50;
+  *_9 = _10;
+  _13 = y_33 + _8;
+  *_13 = i_20;
+  i_43 = i_20 + 1;
+
+  <bb 4> [local count: 1073741824]:
+  # i_20 = PHI <0(2), i_43(3)>
+  if (i_20 <= 99)
+    goto <bb 3>; [99.00%]
+  else
+    goto <bb 5>; [1.00%]
+
+  <bb 5> [local count: 10737416]:
+  saxpy (res_29, x_31, y_33, 2, 100);
+  goto <bb 11>; [100.00%]
+
+  <bb 6> [local count: 1063004409]:
+  _14 = (long unsigned int) i_21;
+  _15 = _14 * 4;
+  _16 = res_29 + _15;
+  _17 = *_16;
+  printf ("res[%d] = %d ; ", i_21, _17);
+  _18 = i_21 + 1;
+  _19 = _18 % 10;
+  if (_19 == 0)
+    goto <bb 7>; [33.00%]
+  else
+    goto <bb 9>; [67.00%]
+
+  <bb 7> [local count: 350791453]:
+  __builtin_putchar (10);
+
+  <bb 9> [local count: 1063004409]:
+  # i_23 = PHI <_18(6), _18(7)>
+
+  <bb 11> [local count: 1073741824]:
+  # i_21 = PHI <i_23(9), 0(5)>
+  if (i_21 <= 99)
+    goto <bb 6>; [99.00%]
+  else
+    goto <bb 10>; [1.00%]
+
+  <bb 10> [local count: 10737416]:
+  return 1;
+
+}
+
+

@@ -1,0 +1,439 @@
+
+;; Function saxpy (saxpy, funcdef_no=22, decl_uid=3008, cgraph_uid=23, symbol_order=22)
+
+Points-to analysis
+
+Constraints:
+
+ANYTHING = &ANYTHING
+ESCAPED = *ESCAPED
+ESCAPED = ESCAPED + UNKNOWN
+*ESCAPED = NONLOCAL
+NONLOCAL = &NONLOCAL
+NONLOCAL = &ESCAPED
+INTEGER = &ANYTHING
+res = &NONLOCAL
+x = &NONLOCAL
+y = &NONLOCAL
+a = &NONLOCAL
+size = &NONLOCAL
+_1 = i_10
+_2 = _1
+_2 = &NONLOCAL
+_3 = x
+_4 = *_3
+_5 = _4
+_5 = a
+_6 = y
+_7 = *_6
+_8 = res
+_9 = _5
+_9 = _7
+*_8 = _9
+i_19 = i_10
+i_19 = &NONLOCAL
+i_10 = &NULL
+i_10 = i_19
+
+Collapsing static cycles and doing variable substitution
+Building predecessor graph
+Detecting pointer and location equivalences
+Rewriting constraints and unifying variables
+Uniting pointer but not location equivalent variables
+Finding indirect cycles
+Solving graph
+
+Points-to sets
+
+ANYTHING = { ANYTHING }
+ESCAPED = { ESCAPED NONLOCAL }
+NONLOCAL = { ESCAPED NONLOCAL } same as _4
+STOREDANYTHING = { }
+INTEGER = { ANYTHING }
+res = { NONLOCAL }
+x = { NONLOCAL } same as res
+y = { NONLOCAL } same as res
+a = { NONLOCAL } same as res
+size = { NONLOCAL } same as res
+_1 = { NULL NONLOCAL }
+i_10 = { NULL NONLOCAL } same as _1
+_2 = { NULL NONLOCAL } same as _1
+_3 = { NONLOCAL } same as res
+_4 = { ESCAPED NONLOCAL }
+_5 = { ESCAPED NONLOCAL } same as _4
+_6 = { NONLOCAL } same as res
+_7 = { ESCAPED NONLOCAL } same as _4
+_8 = { NONLOCAL } same as res
+_9 = { ESCAPED NONLOCAL } same as _4
+i_19 = { NULL NONLOCAL } same as _1
+
+
+Alias information for saxpy
+
+Aliased symbols
+
+
+Call clobber information
+
+ESCAPED, points-to non-local, points-to vars: { }
+
+Flow-insensitive points-to information
+
+_3, points-to non-local, points-to NULL, points-to vars: { }
+_6, points-to non-local, points-to NULL, points-to vars: { }
+_8, points-to non-local, points-to NULL, points-to vars: { }
+x_14(D), points-to non-local, points-to NULL, points-to vars: { }
+y_16(D), points-to non-local, points-to NULL, points-to vars: { }
+res_17(D), points-to non-local, points-to NULL, points-to vars: { }
+
+void saxpy (int * res, int * x, int * y, int a, int size)
+{
+  int i;
+  long unsigned int _1;
+  long unsigned int _2;
+  int * _3;
+  int _4;
+  int _5;
+  int * _6;
+  int _7;
+  int * _8;
+  int _9;
+
+  <bb 2> [local count: 118111600]:
+  goto <bb 4>; [100.00%]
+
+  <bb 3> [local count: 955630225]:
+  _1 = (long unsigned int) i_10;
+  _2 = _1 * 4;
+  _3 = x_14(D) + _2;
+  _4 = *_3;
+  _5 = _4 * a_15(D);
+  _6 = y_16(D) + _2;
+  _7 = *_6;
+  _8 = res_17(D) + _2;
+  _9 = _5 + _7;
+  *_8 = _9;
+  i_19 = i_10 + 1;
+
+  <bb 4> [local count: 1073741824]:
+  # i_10 = PHI <0(2), i_19(3)>
+  if (i_10 < size_13(D))
+    goto <bb 3>; [89.00%]
+  else
+    goto <bb 5>; [11.00%]
+
+  <bb 5> [local count: 118111600]:
+  return;
+
+}
+
+
+
+;; Function main (main, funcdef_no=23, decl_uid=3017, cgraph_uid=24, symbol_order=23) (executed once)
+
+Points-to analysis
+
+Constraints:
+
+ANYTHING = &ANYTHING
+ESCAPED = *ESCAPED
+ESCAPED = ESCAPED + UNKNOWN
+*ESCAPED = NONLOCAL
+NONLOCAL = &NONLOCAL
+NONLOCAL = &ESCAPED
+INTEGER = &ANYTHING
+argc = &NONLOCAL
+argv = &NONLOCAL
+callescape(11) = &NONLOCAL
+CALLUSED(12) = callescape(11)
+callarg(14) = &NONLOCAL
+callarg(14) = callarg(14) + UNKNOWN
+callarg(14) = *callarg(14) + UNKNOWN
+CALLUSED(12) = callarg(14)
+*callarg(14) = callescape(11)
+CALLCLOBBERED(13) = callarg(14)
+callescape(11) = callarg(14)
+res_20 = &HEAP(16)
+callescape(17) = &NONLOCAL
+CALLUSED(18) = callescape(17)
+callarg(20) = &NONLOCAL
+callarg(20) = callarg(20) + UNKNOWN
+callarg(20) = *callarg(20) + UNKNOWN
+CALLUSED(18) = callarg(20)
+*callarg(20) = callescape(17)
+CALLCLOBBERED(19) = callarg(20)
+callescape(17) = callarg(20)
+x_22 = &HEAP(22)
+callescape(23) = &NONLOCAL
+CALLUSED(24) = callescape(23)
+callarg(26) = &NONLOCAL
+callarg(26) = callarg(26) + UNKNOWN
+callarg(26) = *callarg(26) + UNKNOWN
+CALLUSED(24) = callarg(26)
+*callarg(26) = callescape(23)
+CALLCLOBBERED(25) = callarg(26)
+callescape(23) = callarg(26)
+y_24 = &HEAP(28)
+_1 = i_13
+_2 = _1
+_2 = &NONLOCAL
+_3 = x_22
+_4 = i_13
+_4 = &NONLOCAL
+*_3 = _4
+_6 = y_24
+*_6 = i_13
+i_30 = i_13
+i_30 = &NONLOCAL
+i_13 = &NULL
+i_13 = i_30
+callescape(37) = &NONLOCAL
+CALLUSED(38) = callescape(37)
+callarg(40) = res_20
+callarg(40) = callarg(40) + UNKNOWN
+*callarg(40) = callescape(37)
+CALLCLOBBERED(39) = callarg(40)
+callarg(41) = x_22
+callarg(41) = callarg(41) + UNKNOWN
+indircallarg(42) = *callarg(41) + UNKNOWN
+indircallarg(42) = indircallarg(42) + UNKNOWN
+indircallarg(42) = *indircallarg(42) + UNKNOWN
+CALLUSED(38) = callarg(41)
+CALLUSED(38) = indircallarg(42)
+*indircallarg(42) = callescape(37)
+CALLCLOBBERED(39) = indircallarg(42)
+callescape(37) = indircallarg(42)
+callarg(43) = y_24
+callarg(43) = callarg(43) + UNKNOWN
+indircallarg(44) = *callarg(43) + UNKNOWN
+indircallarg(44) = indircallarg(44) + UNKNOWN
+indircallarg(44) = *indircallarg(44) + UNKNOWN
+CALLUSED(38) = callarg(43)
+CALLUSED(38) = indircallarg(44)
+*indircallarg(44) = callescape(37)
+CALLCLOBBERED(39) = indircallarg(44)
+callescape(37) = indircallarg(44)
+callarg(45) = &NONLOCAL
+callarg(45) = callarg(45) + UNKNOWN
+callarg(45) = *callarg(45) + UNKNOWN
+CALLUSED(38) = callarg(45)
+*callarg(45) = callescape(37)
+CALLCLOBBERED(39) = callarg(45)
+callescape(37) = callarg(45)
+_7 = i_14
+_8 = _7
+_8 = &NONLOCAL
+_9 = res_20
+_10 = *_9
+callescape(52) = NONLOCAL
+CALLUSED(53) = callescape(52)
+callarg(55) = &STRING
+callarg(55) = callarg(55) + UNKNOWN
+callarg(55) = *callarg(55) + UNKNOWN
+CALLUSED(53) = callarg(55)
+*callarg(55) = callescape(52)
+CALLCLOBBERED(54) = callarg(55)
+callescape(52) = callarg(55)
+ESCAPED = &STRING
+callarg(56) = i_14
+callarg(56) = callarg(56) + UNKNOWN
+callarg(56) = *callarg(56) + UNKNOWN
+CALLUSED(53) = callarg(56)
+*callarg(56) = callescape(52)
+CALLCLOBBERED(54) = callarg(56)
+callescape(52) = callarg(56)
+ESCAPED = i_14
+callarg(57) = _10
+callarg(57) = callarg(57) + UNKNOWN
+callarg(57) = *callarg(57) + UNKNOWN
+CALLUSED(53) = callarg(57)
+*callarg(57) = callescape(52)
+CALLCLOBBERED(54) = callarg(57)
+callescape(52) = callarg(57)
+ESCAPED = _10
+_11 = i_14
+_11 = &NONLOCAL
+_12 = _11
+callescape(61) = NONLOCAL
+CALLUSED(62) = callescape(61)
+callarg(64) = &NONLOCAL
+callarg(64) = callarg(64) + UNKNOWN
+callarg(64) = *callarg(64) + UNKNOWN
+CALLUSED(62) = callarg(64)
+*callarg(64) = callescape(61)
+CALLCLOBBERED(63) = callarg(64)
+callescape(61) = callarg(64)
+ESCAPED = &NONLOCAL
+i_14 = _11
+i_14 = &NULL
+
+Collapsing static cycles and doing variable substitution
+Building predecessor graph
+Detecting pointer and location equivalences
+Rewriting constraints and unifying variables
+Uniting pointer but not location equivalent variables
+Finding indirect cycles
+Solving graph
+
+Points-to sets
+
+ANYTHING = { ANYTHING }
+ESCAPED = { NULL STRING ESCAPED NONLOCAL }
+NONLOCAL = { ESCAPED NONLOCAL }
+STOREDANYTHING = { }
+INTEGER = { ANYTHING }
+HEAP(16) = { NULL ESCAPED NONLOCAL }
+HEAP(22) = { NULL NONLOCAL }
+HEAP(28) = { NULL NONLOCAL }
+argc = { NONLOCAL }
+argv = { NONLOCAL } same as argc
+malloc = { }
+callescape(11) = { ESCAPED NONLOCAL }
+CALLUSED(12) = { ESCAPED NONLOCAL } same as callescape(11)
+CALLCLOBBERED(13) = { ESCAPED NONLOCAL } same as callescape(11)
+callarg(14) = { ESCAPED NONLOCAL } same as callescape(11)
+res_20 = { HEAP(16) }
+callescape(17) = { ESCAPED NONLOCAL }
+CALLUSED(18) = { ESCAPED NONLOCAL } same as callescape(17)
+CALLCLOBBERED(19) = { ESCAPED NONLOCAL } same as callescape(17)
+callarg(20) = { ESCAPED NONLOCAL } same as callescape(17)
+x_22 = { HEAP(22) }
+callescape(23) = { ESCAPED NONLOCAL }
+CALLUSED(24) = { ESCAPED NONLOCAL } same as callescape(23)
+CALLCLOBBERED(25) = { ESCAPED NONLOCAL } same as callescape(23)
+callarg(26) = { ESCAPED NONLOCAL } same as callescape(23)
+y_24 = { HEAP(28) }
+_1 = { NULL NONLOCAL }
+i_13 = { NULL NONLOCAL } same as _1
+_2 = { NULL NONLOCAL } same as _1
+_3 = { HEAP(22) } same as x_22
+_4 = { NULL NONLOCAL } same as _1
+_6 = { HEAP(28) } same as y_24
+i_30 = { NULL NONLOCAL } same as _1
+saxpy = { }
+callescape(37) = { NULL ESCAPED NONLOCAL }
+CALLUSED(38) = { NULL ESCAPED NONLOCAL HEAP(22) HEAP(28) }
+CALLCLOBBERED(39) = { NULL ESCAPED NONLOCAL HEAP(16) }
+callarg(40) = { HEAP(16) }
+callarg(41) = { HEAP(22) }
+indircallarg(42) = { NULL ESCAPED NONLOCAL }
+callarg(43) = { HEAP(28) }
+indircallarg(44) = { NULL ESCAPED NONLOCAL }
+callarg(45) = { ESCAPED NONLOCAL }
+_7 = { NULL NONLOCAL } same as _1
+i_14 = { NULL NONLOCAL } same as _1
+_8 = { NULL NONLOCAL } same as _1
+_9 = { HEAP(16) } same as res_20
+_10 = { NULL ESCAPED NONLOCAL }
+printf = { }
+callescape(52) = { NULL STRING ESCAPED NONLOCAL }
+CALLUSED(53) = { NULL STRING ESCAPED NONLOCAL } same as callescape(52)
+CALLCLOBBERED(54) = { NULL STRING ESCAPED NONLOCAL }
+callarg(55) = { STRING }
+callarg(56) = { NULL ESCAPED NONLOCAL }
+callarg(57) = { NULL ESCAPED NONLOCAL }
+_11 = { NULL NONLOCAL } same as _1
+_12 = { NULL NONLOCAL } same as _1
+putchar = { }
+callescape(61) = { ESCAPED NONLOCAL }
+CALLUSED(62) = { ESCAPED NONLOCAL } same as callescape(61)
+CALLCLOBBERED(63) = { ESCAPED NONLOCAL } same as callarg(64)
+callarg(64) = { ESCAPED NONLOCAL }
+main = { }
+
+
+Alias information for main
+
+Aliased symbols
+
+
+Call clobber information
+
+ESCAPED, points-to non-local, points-to NULL, points-to vars: { }
+
+Flow-insensitive points-to information
+
+_3, points-to NULL, points-to vars: { D.3057 }
+_6, points-to NULL, points-to vars: { D.3058 }
+_9, points-to NULL, points-to vars: { D.3056 }
+res_20, points-to NULL, points-to vars: { D.3056 }
+x_22, points-to NULL, points-to vars: { D.3057 }
+y_24, points-to NULL, points-to vars: { D.3058 }
+
+__attribute__((access ("^1[ ]", )))
+int main (int argc, char * * argv)
+{
+  int * y;
+  int * x;
+  int * res;
+  int i;
+  long unsigned int _1;
+  long unsigned int _2;
+  int * _3;
+  int _4;
+  int * _6;
+  long unsigned int _7;
+  long unsigned int _8;
+  int * _9;
+  int _10;
+  int _11;
+  int _12;
+
+  <bb 2> [local count: 10737416]:
+  res_20 = malloc (400);
+  x_22 = malloc (400);
+  y_24 = malloc (400);
+  goto <bb 4>; [100.00%]
+
+  <bb 3> [local count: 1063004409]:
+  _1 = (long unsigned int) i_13;
+  _2 = _1 * 4;
+  _3 = x_22 + _2;
+  _4 = i_13 + 50;
+  *_3 = _4;
+  _6 = y_24 + _2;
+  *_6 = i_13;
+  i_30 = i_13 + 1;
+
+  <bb 4> [local count: 1073741824]:
+  # i_13 = PHI <0(2), i_30(3)>
+  if (i_13 <= 99)
+    goto <bb 3>; [99.00%]
+  else
+    goto <bb 5>; [1.00%]
+
+  <bb 5> [local count: 10737416]:
+  saxpy (res_20, x_22, y_24, 2, 100);
+  goto <bb 11>; [100.00%]
+
+  <bb 6> [local count: 1063004409]:
+  _7 = (long unsigned int) i_14;
+  _8 = _7 * 4;
+  _9 = res_20 + _8;
+  _10 = *_9;
+  printf ("res[%d] = %d ; ", i_14, _10);
+  _11 = i_14 + 1;
+  _12 = _11 % 10;
+  if (_12 == 0)
+    goto <bb 7>; [33.00%]
+  else
+    goto <bb 9>; [67.00%]
+
+  <bb 7> [local count: 350791453]:
+  __builtin_putchar (10);
+
+  <bb 9> [local count: 1063004409]:
+
+  <bb 11> [local count: 1073741824]:
+  # i_14 = PHI <_11(9), 0(5)>
+  if (i_14 <= 99)
+    goto <bb 6>; [99.00%]
+  else
+    goto <bb 10>; [1.00%]
+
+  <bb 10> [local count: 10737416]:
+  return 1;
+
+}
+
+

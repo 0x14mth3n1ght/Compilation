@@ -1,0 +1,208 @@
+
+;; Function saxpy (saxpy, funcdef_no=22, decl_uid=3008, cgraph_uid=23, symbol_order=22)
+
+;; 2 loops found
+;;
+;; Loop 0
+;;  header 0, latch 1
+;;  depth 0, outer -1
+;;  nodes: 0 1 2 3 4 5
+;;
+;; Loop 1
+;;  header 4, latch 3
+;;  depth 1, outer 0
+;;  nodes: 4 3
+;; 2 succs { 4 }
+;; 3 succs { 4 }
+;; 4 succs { 3 5 }
+;; 5 succs { 1 }
+Predictions for bb 2
+1 edges in bb 2 predicted to even probabilities
+Predictions for bb 3
+1 edges in bb 3 predicted to even probabilities
+Predictions for bb 4
+  first match heuristics: 89.00%
+  combined heuristics: 89.00%
+  loop exit heuristics of edge 4->5: 11.00%
+Predictions for bb 5
+1 edges in bb 5 predicted to even probabilities
+cyclic probability of bb 4 is 0.890000; turning freq 1.000000 to 9.090909
+void saxpy (int * res, int * x, int * y, int a, int size)
+{
+  int i;
+  long unsigned int _1;
+  long unsigned int _2;
+  int * _3;
+  int _4;
+  int _5;
+  int * _8;
+  int _9;
+  int * _12;
+  int _13;
+
+  <bb 2> [local count: 118111600]:
+  goto <bb 4>; [100.00%]
+
+  <bb 3> [local count: 955630225]:
+  _1 = (long unsigned int) i_14;
+  _2 = _1 * 4;
+  _3 = x_19(D) + _2;
+  _4 = *_3;
+  _5 = _4 * a_20(D);
+  _8 = y_21(D) + _2;
+  _9 = *_8;
+  _12 = res_22(D) + _2;
+  _13 = _5 + _9;
+  *_12 = _13;
+  i_24 = i_14 + 1;
+
+  <bb 4> [local count: 1073741824]:
+  # i_14 = PHI <0(2), i_24(3)>
+  if (i_14 < size_18(D))
+    goto <bb 3>; [89.00%]
+  else
+    goto <bb 5>; [11.00%]
+
+  <bb 5> [local count: 118111600]:
+  return;
+
+}
+
+
+
+;; Function main (main, funcdef_no=23, decl_uid=3017, cgraph_uid=24, symbol_order=23)
+
+Disambiguating loop 2 with multiple latches
+Merged latch edges of loop 2
+;; 3 loops found
+;;
+;; Loop 0
+;;  header 0, latch 1
+;;  depth 0, outer -1
+;;  nodes: 0 1 2 3 4 5 6 7 9 11 10
+;;
+;; Loop 2
+;;  header 11, latch 9
+;;  depth 1, outer 0
+;;  nodes: 11 9 6 7
+;;
+;; Loop 1
+;;  header 4, latch 3
+;;  depth 1, outer 0
+;;  nodes: 4 3
+;; 2 succs { 4 }
+;; 3 succs { 4 }
+;; 4 succs { 3 5 }
+;; 5 succs { 11 }
+;; 6 succs { 7 9 }
+;; 7 succs { 9 }
+;; 9 succs { 11 }
+;; 11 succs { 6 10 }
+;; 10 succs { 1 }
+Predictions for bb 2
+1 edges in bb 2 predicted to even probabilities
+Predictions for bb 3
+1 edges in bb 3 predicted to even probabilities
+Predictions for bb 4
+  first match heuristics: 99.00%
+  combined heuristics: 99.00%
+  loop iterations heuristics of edge 4->5: 1.00%
+Predictions for bb 5
+1 edges in bb 5 predicted to even probabilities
+Predictions for bb 6
+  DS theory heuristics: 33.00%
+  combined heuristics: 33.00%
+  call heuristics of edge 6->7: 33.00%
+Predictions for bb 7
+1 edges in bb 7 predicted to even probabilities
+Predictions for bb 9
+1 edges in bb 9 predicted to even probabilities
+Predictions for bb 11
+  first match heuristics: 99.00%
+  combined heuristics: 99.00%
+  call heuristics of edge 11->6 (ignored): 33.00%
+  loop iterations heuristics of edge 11->10: 1.00%
+Predictions for bb 10
+1 edges in bb 10 predicted to even probabilities
+cyclic probability of bb 4 is 0.990000; turning freq 1.000000 to 100.000021
+cyclic probability of bb 11 is 0.990000; turning freq 1.000000 to 100.000021
+__attribute__((access ("^1[ ]", )))
+int main (int argc, char * * argv)
+{
+  int a;
+  int * y;
+  int * x;
+  int * res;
+  int size;
+  int i;
+  long unsigned int _7;
+  long unsigned int _8;
+  int * _9;
+  int _10;
+  int * _13;
+  long unsigned int _14;
+  long unsigned int _15;
+  int * _16;
+  int _17;
+  int _18;
+  int _19;
+
+  <bb 2> [local count: 10737416]:
+  res_29 = malloc (400);
+  x_31 = malloc (400);
+  y_33 = malloc (400);
+  goto <bb 4>; [100.00%]
+
+  <bb 3> [local count: 1063004409]:
+  _7 = (long unsigned int) i_20;
+  _8 = _7 * 4;
+  _9 = x_31 + _8;
+  _10 = i_20 + 50;
+  *_9 = _10;
+  _13 = y_33 + _8;
+  *_13 = i_20;
+  i_43 = i_20 + 1;
+
+  <bb 4> [local count: 1073741824]:
+  # i_20 = PHI <0(2), i_43(3)>
+  if (i_20 <= 99)
+    goto <bb 3>; [99.00%]
+  else
+    goto <bb 5>; [1.00%]
+
+  <bb 5> [local count: 10737416]:
+  saxpy (res_29, x_31, y_33, 2, 100);
+  goto <bb 11>; [100.00%]
+
+  <bb 6> [local count: 1063004409]:
+  _14 = (long unsigned int) i_21;
+  _15 = _14 * 4;
+  _16 = res_29 + _15;
+  _17 = *_16;
+  printf ("res[%d] = %d ; ", i_21, _17);
+  _18 = i_21 + 1;
+  _19 = _18 % 10;
+  if (_19 == 0)
+    goto <bb 7>; [33.00%]
+  else
+    goto <bb 9>; [67.00%]
+
+  <bb 7> [local count: 350791453]:
+  __builtin_putchar (10);
+
+  <bb 9> [local count: 1063004409]:
+  # i_23 = PHI <_18(6), _18(7)>
+
+  <bb 11> [local count: 1073741824]:
+  # i_21 = PHI <i_23(9), 0(5)>
+  if (i_21 <= 99)
+    goto <bb 6>; [99.00%]
+  else
+    goto <bb 10>; [1.00%]
+
+  <bb 10> [local count: 10737416]:
+  return 1;
+
+}
+
+

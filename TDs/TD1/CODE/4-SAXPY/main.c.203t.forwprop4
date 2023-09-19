@@ -1,0 +1,124 @@
+
+;; Function saxpy (saxpy, funcdef_no=22, decl_uid=3008, cgraph_uid=23, symbol_order=22)
+
+void saxpy (int * res, int * x, int * y, int a, int size)
+{
+  sizetype ivtmp.11;
+  int i;
+  int _4;
+  int _5;
+  int _7;
+  int _9;
+  sizetype _20;
+  sizetype _21;
+
+  <bb 2> [local count: 118111600]:
+  if (size_13(D) > 0)
+    goto <bb 3>; [89.00%]
+  else
+    goto <bb 5>; [11.00%]
+
+  <bb 3> [local count: 105119324]:
+  _21 = (sizetype) size_13(D);
+  _20 = _21 * 4;
+
+  <bb 4> [local count: 955630225]:
+  # ivtmp.11_11 = PHI <ivtmp.11_10(6), 0(3)>
+  _4 = MEM[(int *)x_14(D) + ivtmp.11_11 * 1];
+  _5 = _4 * a_15(D);
+  _7 = MEM[(int *)y_16(D) + ivtmp.11_11 * 1];
+  _9 = _5 + _7;
+  MEM[(int *)res_17(D) + ivtmp.11_11 * 1] = _9;
+  ivtmp.11_10 = ivtmp.11_11 + 4;
+  if (ivtmp.11_10 != _20)
+    goto <bb 6>; [89.00%]
+  else
+    goto <bb 5>; [11.00%]
+
+  <bb 6> [local count: 850510901]:
+  goto <bb 4>; [100.00%]
+
+  <bb 5> [local count: 118111600]:
+  return;
+
+}
+
+
+
+;; Function main (main, funcdef_no=23, decl_uid=3017, cgraph_uid=24, symbol_order=23) (executed once)
+
+__attribute__((access ("^1[ ]", )))
+int main (int argc, char * * argv)
+{
+  unsigned long ivtmp.25;
+  unsigned long ivtmp.23;
+  int * y;
+  int * x;
+  int * res;
+  int i;
+  int _4;
+  int _10;
+  int _11;
+  int _12;
+  void * _13;
+  unsigned int _41;
+  unsigned int _42;
+
+  <bb 2> [local count: 10737416]:
+  res_20 = malloc (400);
+  x_22 = malloc (400);
+  y_24 = malloc (400);
+
+  <bb 3> [local count: 1063004409]:
+  # ivtmp.25_34 = PHI <ivtmp.25_33(10), 0(2)>
+  _42 = (unsigned int) ivtmp.25_34;
+  i_35 = (int) ivtmp.25_34;
+  _41 = _42 + 50;
+  _4 = (int) _41;
+  MEM[(int *)x_22 + ivtmp.25_34 * 4] = _4;
+  MEM[(int *)y_24 + ivtmp.25_34 * 4] = i_35;
+  ivtmp.25_33 = ivtmp.25_34 + 1;
+  if (ivtmp.25_33 != 100)
+    goto <bb 10>; [99.00%]
+  else
+    goto <bb 4>; [1.00%]
+
+  <bb 10> [local count: 1052374367]:
+  goto <bb 3>; [100.00%]
+
+  <bb 4> [local count: 10737416]:
+  saxpy (res_20, x_22, y_24, 2, 100);
+  ivtmp.23_15 = (unsigned long) res_20;
+
+  <bb 5> [local count: 1063004409]:
+  # i_36 = PHI <_11(9), 0(4)>
+  # ivtmp.23_14 = PHI <ivtmp.23_32(9), ivtmp.23_15(4)>
+  _13 = (void *) ivtmp.23_14;
+  _10 = MEM[(int *)_13];
+  printf ("res[%d] = %d ; ", i_36, _10);
+  _11 = i_36 + 1;
+  _12 = _11 % 10;
+  if (_12 == 0)
+    goto <bb 6>; [33.00%]
+  else
+    goto <bb 7>; [67.00%]
+
+  <bb 6> [local count: 350791453]:
+  __builtin_putchar (10);
+
+  <bb 7> [local count: 1063004409]:
+  ivtmp.23_32 = ivtmp.23_14 + 4;
+  if (_11 != 100)
+    goto <bb 9>; [99.00%]
+  else
+    goto <bb 8>; [1.00%]
+
+  <bb 9> [local count: 1052374367]:
+  goto <bb 5>; [100.00%]
+
+  <bb 8> [local count: 10737416]:
+  return 1;
+
+}
+
+

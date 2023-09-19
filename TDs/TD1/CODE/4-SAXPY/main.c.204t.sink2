@@ -1,0 +1,162 @@
+
+;; Function saxpy (saxpy, funcdef_no=22, decl_uid=3008, cgraph_uid=23, symbol_order=22)
+
+;; 2 loops found
+;;
+;; Loop 0
+;;  header 0, latch 1
+;;  depth 0, outer -1
+;;  nodes: 0 1 2 3 4 6 5
+;;
+;; Loop 1
+;;  header 4, latch 6
+;;  depth 1, outer 0
+;;  nodes: 4 6
+;; 2 succs { 3 5 }
+;; 3 succs { 4 }
+;; 4 succs { 6 5 }
+;; 6 succs { 4 }
+;; 5 succs { 1 }
+Removing basic block 6
+Removing basic block 7
+Removing basic block 8
+void saxpy (int * res, int * x, int * y, int a, int size)
+{
+  sizetype ivtmp.11;
+  int i;
+  int _4;
+  int _5;
+  int _7;
+  int _9;
+  sizetype _20;
+  sizetype _21;
+
+  <bb 2> [local count: 118111600]:
+  if (size_13(D) > 0)
+    goto <bb 3>; [89.00%]
+  else
+    goto <bb 5>; [11.00%]
+
+  <bb 3> [local count: 105119324]:
+  _21 = (sizetype) size_13(D);
+  _20 = _21 * 4;
+
+  <bb 4> [local count: 955630225]:
+  # ivtmp.11_11 = PHI <ivtmp.11_10(4), 0(3)>
+  _4 = MEM[(int *)x_14(D) + ivtmp.11_11 * 1];
+  _5 = _4 * a_15(D);
+  _7 = MEM[(int *)y_16(D) + ivtmp.11_11 * 1];
+  _9 = _5 + _7;
+  MEM[(int *)res_17(D) + ivtmp.11_11 * 1] = _9;
+  ivtmp.11_10 = ivtmp.11_11 + 4;
+  if (ivtmp.11_10 != _20)
+    goto <bb 4>; [89.00%]
+  else
+    goto <bb 5>; [11.00%]
+
+  <bb 5> [local count: 118111600]:
+  return;
+
+}
+
+
+
+;; Function main (main, funcdef_no=23, decl_uid=3017, cgraph_uid=24, symbol_order=23) (executed once)
+
+;; 3 loops found
+;;
+;; Loop 0
+;;  header 0, latch 1
+;;  depth 0, outer -1
+;;  nodes: 0 1 2 3 10 4 5 6 7 9 8
+;;
+;; Loop 2
+;;  header 5, latch 9
+;;  depth 1, outer 0
+;;  nodes: 5 9 7 6
+;;
+;; Loop 1
+;;  header 3, latch 10
+;;  depth 1, outer 0
+;;  nodes: 3 10
+;; 2 succs { 3 }
+;; 3 succs { 10 4 }
+;; 10 succs { 3 }
+;; 4 succs { 5 }
+;; 5 succs { 6 7 }
+;; 6 succs { 7 }
+;; 7 succs { 9 8 }
+;; 9 succs { 5 }
+;; 8 succs { 1 }
+Removing basic block 9
+Removing basic block 10
+Removing basic block 11
+__attribute__((access ("^1[ ]", )))
+int main (int argc, char * * argv)
+{
+  unsigned long ivtmp.25;
+  unsigned long ivtmp.23;
+  int * y;
+  int * x;
+  int * res;
+  int i;
+  int _4;
+  int _10;
+  int _11;
+  int _12;
+  void * _13;
+  unsigned int _41;
+  unsigned int _42;
+
+  <bb 2> [local count: 10737416]:
+  res_20 = malloc (400);
+  x_22 = malloc (400);
+  y_24 = malloc (400);
+
+  <bb 3> [local count: 1063004409]:
+  # ivtmp.25_34 = PHI <ivtmp.25_33(3), 0(2)>
+  _42 = (unsigned int) ivtmp.25_34;
+  i_35 = (int) ivtmp.25_34;
+  _41 = _42 + 50;
+  _4 = (int) _41;
+  MEM[(int *)x_22 + ivtmp.25_34 * 4] = _4;
+  MEM[(int *)y_24 + ivtmp.25_34 * 4] = i_35;
+  ivtmp.25_33 = ivtmp.25_34 + 1;
+  if (ivtmp.25_33 != 100)
+    goto <bb 3>; [99.00%]
+  else
+    goto <bb 4>; [1.00%]
+
+  <bb 4> [local count: 10737416]:
+  saxpy (res_20, x_22, y_24, 2, 100);
+  ivtmp.23_15 = (unsigned long) res_20;
+
+  <bb 5> [local count: 1063004409]:
+  # i_36 = PHI <_11(7), 0(4)>
+  # ivtmp.23_14 = PHI <ivtmp.23_32(7), ivtmp.23_15(4)>
+  _13 = (void *) ivtmp.23_14;
+  _10 = MEM[(int *)_13];
+  printf ("res[%d] = %d ; ", i_36, _10);
+  _11 = i_36 + 1;
+  _12 = _11 % 10;
+  if (_12 == 0)
+    goto <bb 6>; [33.00%]
+  else
+    goto <bb 7>; [67.00%]
+
+  <bb 6> [local count: 350791453]:
+  __builtin_putchar (10);
+
+  <bb 7> [local count: 1063004409]:
+  ivtmp.23_32 = ivtmp.23_14 + 4;
+  if (_11 != 100)
+    goto <bb 5>; [99.00%]
+  else
+    goto <bb 8>; [1.00%]
+
+  <bb 8> [local count: 10737416]:
+  return 1;
+
+}
+
+

@@ -1,0 +1,301 @@
+
+;; Function vprintf (null)
+;; enabled by -tree-original
+
+
+{
+  return vfprintf (stdout, (const char *) __fmt, __arg);
+}
+
+
+;; Function getchar (null)
+;; enabled by -tree-original
+
+
+{
+  return getc (stdin);
+}
+
+
+;; Function fgetc_unlocked (null)
+;; enabled by -tree-original
+
+
+{
+  return __builtin_expect (__fp->_IO_read_ptr >= __fp->_IO_read_end, 0) != 0 ? __uflow (__fp) : (int) *(unsigned char *) __fp->_IO_read_ptr++ ;
+}
+
+
+;; Function getc_unlocked (null)
+;; enabled by -tree-original
+
+
+{
+  return __builtin_expect (__fp->_IO_read_ptr >= __fp->_IO_read_end, 0) != 0 ? __uflow (__fp) : (int) *(unsigned char *) __fp->_IO_read_ptr++ ;
+}
+
+
+;; Function getchar_unlocked (null)
+;; enabled by -tree-original
+
+
+{
+  return __builtin_expect (stdin->_IO_read_ptr >= stdin->_IO_read_end, 0) != 0 ? __uflow (stdin) : (int) *(unsigned char *) stdin->_IO_read_ptr++ ;
+}
+
+
+;; Function putchar (null)
+;; enabled by -tree-original
+
+
+{
+  return putc (__c, stdout);
+}
+
+
+;; Function fputc_unlocked (null)
+;; enabled by -tree-original
+
+
+{
+  return __builtin_expect (__stream->_IO_write_ptr >= __stream->_IO_write_end, 0) != 0 ? __overflow (__stream, (int) (unsigned char) __c) : (int) (unsigned char) (*__stream->_IO_write_ptr++  = (char) __c);
+}
+
+
+;; Function putc_unlocked (null)
+;; enabled by -tree-original
+
+
+{
+  return __builtin_expect (__stream->_IO_write_ptr >= __stream->_IO_write_end, 0) != 0 ? __overflow (__stream, (int) (unsigned char) __c) : (int) (unsigned char) (*__stream->_IO_write_ptr++  = (char) __c);
+}
+
+
+;; Function putchar_unlocked (null)
+;; enabled by -tree-original
+
+
+{
+  return __builtin_expect (stdout->_IO_write_ptr >= stdout->_IO_write_end, 0) != 0 ? __overflow (stdout, (int) (unsigned char) __c) : (int) (unsigned char) (*stdout->_IO_write_ptr++  = (char) __c);
+}
+
+
+;; Function feof_unlocked (null)
+;; enabled by -tree-original
+
+
+{
+  return (__stream->_flags & 16) != 0;
+}
+
+
+;; Function ferror_unlocked (null)
+;; enabled by -tree-original
+
+
+{
+  return (__stream->_flags & 32) != 0;
+}
+
+
+;; Function atoi (null)
+;; enabled by -tree-original
+
+
+{
+  return (int) strtol (__nptr, 0B, 10);
+}
+
+
+;; Function atol (null)
+;; enabled by -tree-original
+
+
+{
+  return strtol (__nptr, 0B, 10);
+}
+
+
+;; Function atoll (null)
+;; enabled by -tree-original
+
+
+{
+  return strtoll (__nptr, 0B, 10);
+}
+
+
+;; Function __bswap_16 (null)
+;; enabled by -tree-original
+
+
+{
+  return (__uint16_t) __builtin_bswap16 ((int) __bsx);
+}
+
+
+;; Function __bswap_32 (null)
+;; enabled by -tree-original
+
+
+{
+  return (__uint32_t) __builtin_bswap32 (__bsx);
+}
+
+
+;; Function __bswap_64 (null)
+;; enabled by -tree-original
+
+
+{
+  return (__uint64_t) __builtin_bswap64 (__bsx);
+}
+
+
+;; Function __uint16_identity (null)
+;; enabled by -tree-original
+
+
+{
+  return __x;
+}
+
+
+;; Function __uint32_identity (null)
+;; enabled by -tree-original
+
+
+{
+  return __x;
+}
+
+
+;; Function __uint64_identity (null)
+;; enabled by -tree-original
+
+
+{
+  return __x;
+}
+
+
+;; Function bsearch (null)
+;; enabled by -tree-original
+
+
+{
+  size_t __l;
+  size_t __u;
+  size_t __idx;
+  const void * __p;
+  int __comparison;
+
+    size_t __l;
+    size_t __u;
+    size_t __idx;
+    const void * __p;
+    int __comparison;
+  __l = 0;
+  __u = __nmemb;
+  goto <D.2895>;
+  <D.2896>:;
+  __idx = (__l + __u) / 2;
+  __p = __base + (sizetype) (__idx * __size);
+  __comparison = __compar (__key, __p);
+  if (__comparison < 0)
+    {
+      __u = __idx;
+    }
+  else
+    {
+      if (__comparison > 0)
+        {
+          __l = __idx + 1;
+        }
+      else
+        {
+          return (void *) __p;
+        }
+    }
+  <D.2895>:;
+  if (__l < __u) goto <D.2896>; else goto <D.2894>;
+  <D.2894>:;
+  return 0B;
+}
+
+
+;; Function atof (null)
+;; enabled by -tree-original
+
+
+{
+  return strtod (__nptr, 0B);
+}
+
+
+;; Function saxpy (null)
+;; enabled by -tree-original
+
+
+{
+  int i;
+
+    int i;
+  i = 0;
+  goto <D.3014>;
+  <D.3013>:;
+  *(res + (sizetype) ((long unsigned int) i * 4)) = *(x + (sizetype) ((long unsigned int) i * 4)) * a + *(y + (sizetype) ((long unsigned int) i * 4));
+  i++ ;
+  <D.3014>:;
+  if (i < size) goto <D.3013>; else goto <D.3011>;
+  <D.3011>:;
+}
+
+
+;; Function main (null)
+;; enabled by -tree-original
+
+
+{
+  int i;
+  int size = 100;
+  int * res;
+  int * x;
+  int * y;
+  int a = 2;
+
+    int i;
+    int size = 100;
+    int * res;
+    int * x;
+    int * y;
+    int a = 2;
+  res = (int *) malloc ((long unsigned int) size * 4);
+  x = (int *) malloc ((long unsigned int) size * 4);
+  y = (int *) malloc ((long unsigned int) size * 4);
+  i = 0;
+  goto <D.3028>;
+  <D.3027>:;
+  *(x + (sizetype) ((long unsigned int) i * 4)) = i + 50;
+  *(y + (sizetype) ((long unsigned int) i * 4)) = i;
+  i++ ;
+  <D.3028>:;
+  if (i < size) goto <D.3027>; else goto <D.3025>;
+  <D.3025>:;
+  saxpy (res, x, y, a, size);
+  i = 0;
+  goto <D.3032>;
+  <D.3031>:;
+  printf ((const char * restrict) "res[%d] = %d ; ", i, *(res + (sizetype) ((long unsigned int) i * 4)));
+  if ((i + 1) % 10 == 0)
+    {
+      printf ((const char * restrict) "\n");
+    }
+  i++ ;
+  <D.3032>:;
+  if (i <= 99) goto <D.3031>; else goto <D.3029>;
+  <D.3029>:;
+  return 1;
+}
+return 0;
+

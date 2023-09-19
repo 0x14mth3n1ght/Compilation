@@ -1,0 +1,71 @@
+39 ccp "Statements deleted" "saxpy" 1
+44 fre "RPO blocks" "saxpy" 4
+44 fre "RPO iterations == 10" "saxpy" 1
+44 fre "RPO blocks visited" "saxpy" 4
+44 fre "RPO num lattice == 22" "saxpy" 1
+44 fre "RPO blocks executable" "saxpy" 4
+44 fre "RPO block visited times == 1" "saxpy" 4
+44 fre "RPO num values == 22" "saxpy" 1
+44 fre "RPO num avail == 11" "saxpy" 1
+44 fre "Eliminated" "saxpy" 4
+58 release_ssa "SSA names released" "saxpy" 5
+58 release_ssa "SSA name holes removed" "saxpy" 5
+39 ccp "Constants propagated" "main" 7
+39 ccp "Statements deleted" "main" 11
+44 fre "RPO blocks" "main" 9
+44 fre "RPO num avail == 17" "main" 1
+44 fre "RPO iterations == 10" "main" 1
+44 fre "RPO blocks visited" "main" 9
+44 fre "RPO num lattice == 31" "main" 1
+44 fre "RPO blocks executable" "main" 9
+44 fre "RPO block visited times == 1" "main" 9
+44 fre "Eliminated" "main" 3
+44 fre "RPO num values == 31" "main" 1
+58 release_ssa "unused VAR_DECLs removed" "main" 2
+58 release_ssa "SSA names released" "main" 13
+58 release_ssa "SSA name holes removed" "main" 13
+117 fre "RPO blocks" "saxpy" 4
+117 fre "RPO iterations == 10" "saxpy" 1
+117 fre "RPO blocks visited" "saxpy" 4
+117 fre "RPO num lattice == 18" "saxpy" 1
+117 fre "RPO num values == 18" "saxpy" 1
+117 fre "RPO blocks executable" "saxpy" 4
+117 fre "RPO block visited times == 1" "saxpy" 4
+117 fre "RPO num avail == 11" "saxpy" 1
+131 ch "RPO blocks" "saxpy" 2
+131 ch "RPO iterations == 10" "saxpy" 1
+131 ch "Incremental SSA update" "saxpy" 1
+131 ch "RPO blocks visited" "saxpy" 2
+131 ch "RPO blocks executable" "saxpy" 2
+131 ch "RPO block visited times == 1" "saxpy" 2
+131 ch "RPO num avail == 0" "saxpy" 1
+131 ch "RPO num values == 3" "saxpy" 1
+131 ch "RPO num lattice == 3" "saxpy" 1
+131 ch "Eliminated" "saxpy" 1
+290 combine "two-insn combine" "saxpy" 1
+117 fre "RPO blocks" "main" 9
+117 fre "RPO num avail == 17" "main" 1
+117 fre "RPO iterations == 10" "main" 1
+117 fre "RPO blocks visited" "main" 9
+117 fre "RPO blocks executable" "main" 9
+117 fre "RPO block visited times == 1" "main" 9
+117 fre "RPO num values == 28" "main" 1
+117 fre "RPO num lattice == 28" "main" 1
+126 copyprop "Copies propagated" "main" 1
+126 copyprop "Statements deleted" "main" 1
+131 ch "RPO num values == 2" "main" 2
+131 ch "RPO blocks" "main" 4
+131 ch "RPO iterations == 10" "main" 2
+131 ch "RPO num lattice == 2" "main" 2
+131 ch "Incremental SSA update" "main" 1
+131 ch "RPO blocks visited" "main" 4
+131 ch "RPO blocks executable" "main" 4
+131 ch "RPO block visited times == 1" "main" 4
+131 ch "RPO num avail == 0" "main" 2
+131 ch "Eliminated" "main" 2
+135 dom "Copies propagated" "main" 1
+136 copyprop "Statements deleted" "main" 1
+200 dom "Copies propagated" "main" 1
+200 dom "Redundant expressions eliminated" "main" 1
+257 optimized "unused VAR_DECLs removed" "main" 1
+290 combine "two-insn combine" "main" 3
