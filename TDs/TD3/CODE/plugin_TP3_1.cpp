@@ -8,6 +8,13 @@
 #include <function.h>
 #include <gimple-iterator.h>
 
+/***********  TD3  **********/
+void print_if_func_mpi(gimple *stmt){
+	
+
+}
+
+/***********       **********/
 
 /* Global variable required for plugin to execute */
 int plugin_is_GPL_compatible;
@@ -345,8 +352,10 @@ class my_pass : public gimple_opt_pass
 			/**   TD2 - FIN QUESTION 7   **/
 			/******************************/
 
-
-
+			/******************************/
+			/******************************/
+			/**   TD3                    **/
+			print_if_func_mpi(fun);
 			return 0;
 		}
 

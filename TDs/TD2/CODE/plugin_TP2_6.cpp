@@ -15,7 +15,7 @@ void print_blocs_index(function *fun){
     FOR_EACH_BB_FN(bb,fun){
         gsi = gsi_start_bb(bb);
         stmt = gsi_stmt(gsi);
-        printf("          |||++||| BLOCK INDEX %d\n", bb->index);
+        printf("          |||++||| BLOCK INDEX %d\n: LINE %d\n", bb->index,gimple_lineno(stmt));
 	}
 }
 

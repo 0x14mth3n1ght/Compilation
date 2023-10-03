@@ -267,6 +267,21 @@ in function main (appel function_name)
 ```
 ## Q5
 
+*CFG*
+
+*Noeud -> basic block (BB)**
+
+```bash
+┌─[night@night-20b7s2ex01]─[~/gcc12]
+└──╼ 6 fichiers, 24Kb)─$ grep  -r FOR_EACH_BB
+share/info/gccint.info:       FOR_EACH_BB (bb)
+share/info/gccint.info:for manipulating the CFG.  The macro ‘FOR_EACH_BB’ can be used to visit
+share/info/gccint.info:     FOR_EACH_BB (bb)
+grep: share/info/gccint.info : fichiers binaires correspondent
+lib/gcc/x86_64-pc-linux-gnu/12.2.0/plugin/include/basic-block.h:#define FOR_EACH_BB_FN(BB, FN) \
+lib/gcc/x86_64-pc-linux-gnu/12.2.0/plugin/include/basic-block.h:#define FOR_EACH_BB_REVERSE_FN(BB, FN) \
+```
+
 ```c++
 void print_blocs_index(function *fun){
     basic_block bb;
@@ -280,3 +295,96 @@ void print_blocs_index(function *fun){
     }
 }
 ```
+
+**dans le plugin**:
+
+```c++
+pass_info.reference_pass_name = "cfg";
+pass_info.ref_pass_instance_number = 0;
+pass_info.pos_op = PASS_POS_INSERT_AFTER;
+```
+
+```bash
+OMPI_MPICC=~/gcc12/bin/gcc mpicc test.c -g -O3 -o TP2_5 -fplugin=./libplugin_TP2_5.so
+Executing my_pass with function mpi_call
+          |||++||| BLOCK INDEX 2
+          |||++||| BLOCK INDEX 3
+          |||++||| BLOCK INDEX 4
+          |||++||| BLOCK INDEX 5
+Executing my_pass with function main
+          |||++||| BLOCK INDEX 2
+          |||++||| BLOCK INDEX 3
+          |||++||| BLOCK INDEX 4
+          |||++||| BLOCK INDEX 5
+```
+
+## Q6
+
+On éxécute:
+
+```c++
+void print_blocs_index(function *fun){
+    basic_block bb;
+    gimple_stmt_iterator gsi;
+    gimple *stmt;
+
+    FOR_EACH_BB_FN(bb,fun){
+        gsi = gsi_start_bb(bb);
+        stmt = gsi_stmt(gsi);
+        printf("          |||++||| BLOCK INDEX %d\n: LINE %d\n", bb->index,gimple_lineno(stmt));
+        //td2_q8_print_called_functions(bb);
+
+	}
+}
+```
+
+```bash
+OMPI_MPICC=~/gcc12/bin/gcc mpicc test.c -g -O3 -o TP2_6 -fplugin=./libplugin_TP2_6.so
+Executing my_pass with function mpi_call
+          |||++||| BLOCK INDEX 2
+: LINE 8
+          |||++||| BLOCK INDEX 3
+: LINE 12
+          |||++||| BLOCK INDEX 4
+: LINE 16
+          |||++||| BLOCK INDEX 5
+: LINE 18
+Executing my_pass with function main
+          |||++||| BLOCK INDEX 2
+: LINE 23
+          |||++||| BLOCK INDEX 3
+: LINE 33
+          |||++||| BLOCK INDEX 4
+: LINE 30
+          |||++||| BLOCK INDEX 5
+: LINE 37
+```
+
+Avec la macro `FOR_ALL_BB_FN`
+
+```c++
+~/gcc12/bin/g++ -I`~/gcc12/bin/gcc -print-file-name=plugin`/include -g -Wall -fno-rtti -shared -fPIC  -o libplugin_TP2_6.so plugin_TP2_6.cpp
+OMPI_MPICC=~/gcc12/bin/gcc mpicc test.c -g -O3 -o TP2_6 -fplugin=./libplugin_TP2_6.so
+Executing my_pass with function mpi_call
+durant l'étape GIMPLE: NEW_PASS
+test.c: Dans la fonction « mpi_call »:
+test.c:6:6: erreur interne du compilateur: Erreur de segmentation
+    6 | void mpi_call(int c)
+      |      ^~~~~~~~
+0xc19fdf crash_signal
+        ../../gcc/toplev.cc:322
+0x7f62d5bc023c gimple_location
+        /home/night/gcc12/lib/gcc/x86_64-pc-linux-gnu/12.2.0/plugin/include/gimple.h:1899
+0x7f62d5bc0258 gimple_lineno
+        /home/night/gcc12/lib/gcc/x86_64-pc-linux-gnu/12.2.0/plugin/include/gimple.h:1967
+0x7f62d5bc034e print_blocs_index(function*)
+        /home/night/S5/CA_2023/TDs/TD2/CODE/plugin_TP2_6.cpp:18
+0x7f62d5bc0622 my_pass::execute(function*)
+        /home/night/S5/CA_2023/TDs/TD2/CODE/plugin_TP2_6.cpp:49
+Veuillez soumettre un rapport d’anomalies complet, avec la sortie du préprocesseur (en utilisant -freport-bug).
+Veuillez inclure la trace de débogage complète dans tout rapport d'anomalie.
+Voir <https://gcc.gnu.org/bugs/> pour les instructions.
+```
+
+## Q7
+
