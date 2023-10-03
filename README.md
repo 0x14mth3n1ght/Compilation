@@ -2,6 +2,8 @@
 
 Code en train de compiler (cfun)  pendant l'éxécution de notre plugin
 
+[Cours/TPs MPI](https://github.com/0x14mth3n1ght/MPI)
+
 ## CFG
 
 - != Graphe d'appel des fonctions
@@ -47,6 +49,8 @@ else{
 ```
 
 ## SSA
+
+[Cours/TPs Architecture Matérielle](https://github.com/0x14mth3n1ght/Architecture_materielle/)
 
 R ^ W <- vraie dépendance posant problème
 
