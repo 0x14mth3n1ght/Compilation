@@ -9,8 +9,8 @@ EXE= TP2_1 \
 
 all: $(EXE)
 
-CXX=g++_1220
-CC=gcc_1220
+CXX=~/gcc12/bin/g++
+CC=~/gcc12/bin/gcc
 
 MPICC=mpicc
 
@@ -23,7 +23,7 @@ libplugin_%.so: plugin_%.cpp
 	$(CXX) $(PLUGIN_FLAGS) $(GMP_CFLAGS) -o $@ $<
 
 % : libplugin_%.so test.c
-	$(MPICC) test.c $(CFLAGS) -o $@ -fplugin=./$< 
+	OMPI_MPICC=$(CC) $(MPICC) test.c $(CFLAGS) -o $@ -fplugin=./$< 
 
 clean:
 	rm -rf $(EXE)
