@@ -401,7 +401,7 @@ Executing my_pass with function main
 [GRAPHVIZ] Generating CFG of function main in file <main_test.c_22_viz.dot>
 ```
 
-![mpi_call](CODE/mpi_call_test.c_22_viz.png)
+![mpi_call](CODE/mpi_call_test.c_7_viz.png)
 
 ![main](CODE/main_test.c_22_viz.png)
 
