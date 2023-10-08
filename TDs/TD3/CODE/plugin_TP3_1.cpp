@@ -355,7 +355,7 @@ class my_pass : public gimple_opt_pass
 			/******************************/
 			/******************************/
 			/**   TD3                    **/
-			print_if_func_mpi(fun);
+			//print_if_func_mpi(fun);
 			return 0;
 		}
 

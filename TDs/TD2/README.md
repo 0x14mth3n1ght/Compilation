@@ -362,7 +362,7 @@ Executing my_pass with function main
 
 Avec la macro `FOR_ALL_BB_FN`
 
-```c++
+```bash
 ~/gcc12/bin/g++ -I`~/gcc12/bin/gcc -print-file-name=plugin`/include -g -Wall -fno-rtti -shared -fPIC  -o libplugin_TP2_6.so plugin_TP2_6.cpp
 OMPI_MPICC=~/gcc12/bin/gcc mpicc test.c -g -O3 -o TP2_6 -fplugin=./libplugin_TP2_6.so
 Executing my_pass with function mpi_call
@@ -388,3 +388,48 @@ Voir <https://gcc.gnu.org/bugs/> pour les instructions.
 
 ## Q7
 
+```bash
+~/gcc12/bin/g++ -I`~/gcc12/bin/gcc -print-file-name=plugin`/include -g -Wall -fno-rtti -shared -fPIC  -o libplugin_TP2_7.so plugin_TP2_7.cpp
+Dans le fichier inclus depuis plugin_TP2_7.cpp:2:
+/home/night/gcc12/lib/gcc/x86_64-pc-linux-gnu/12.2.0/plugin/include/plugin-version.h:16:34: attention: « gcc_version » défini mais pas utilisé [-Wunused-variable]
+   16 | static struct plugin_gcc_version gcc_version = {basever, datestamp,
+      |                                  ^~~~~~~~~~~
+OMPI_MPICC=~/gcc12/bin/gcc mpicc test.c -g -O3 -o TP2_7 -fplugin=./libplugin_TP2_7.so
+Executing my_pass with function mpi_call
+[GRAPHVIZ] Generating CFG of function mpi_call in file <mpi_call_test.c_7_viz.dot>
+Executing my_pass with function main
+[GRAPHVIZ] Generating CFG of function main in file <main_test.c_22_viz.dot>
+```
+
+![mpi_call](CODE/mpi_call_test.c_22_viz.png)
+
+![main](CODE/main_test.c_22_viz.png)
+
+## Q8
+
+```bash
+~/gcc12/bin/g++ -I`~/gcc12/bin/gcc -print-file-name=plugin`/include -g -Wall -fno-rtti -shared -fPIC  -o libplugin_TP2_8.so plugin_TP2_8.cpp
+Dans le fichier inclus depuis plugin_TP2_8.cpp:2:
+/home/night/gcc12/lib/gcc/x86_64-pc-linux-gnu/12.2.0/plugin/include/plugin-version.h:16:34: attention: « gcc_version » défini mais pas utilisé [-Wunused-variable]
+   16 | static struct plugin_gcc_version gcc_version = {basever, datestamp,
+      |                                  ^~~~~~~~~~~
+OMPI_MPICC=~/gcc12/bin/gcc mpicc test.c -g -O3 -o TP2_8 -fplugin=./libplugin_TP2_8.so
+Executing my_pass with function mpi_call
+        |||++|| BLOCK INDEX 2 : LINE 8
+        |||++||| - gimple statement is a function call: "MPI_Barrier"
+        |||++|| BLOCK INDEX 3 : LINE 12
+        |||++||| - gimple statement is a function call: "printf"
+        |||++|| BLOCK INDEX 4 : LINE 16
+        |||++||| - gimple statement is a function call: "printf"
+        |||++|| BLOCK INDEX 5 : LINE 18
+Executing my_pass with function main
+        |||++|| BLOCK INDEX 2 : LINE 23
+        |||++||| - gimple statement is a function call: "MPI_Init"
+        |||++|| BLOCK INDEX 3 : LINE 33
+        |||++||| - gimple statement is a function call: "mpi_call"
+        |||++|| BLOCK INDEX 4 : LINE 30
+        |||++|| BLOCK INDEX 5 : LINE 37
+        |||++||| - gimple statement is a function call: "printf"
+        |||++||| - gimple statement is a function call: "MPI_Finalize"
+rm libplugin_TP2_7.so libplugin_TP2_8.so libplugin_TP2_2.so libplugin_TP2_6.so libplugin_TP2_3.so libplugin_TP2_5.so libplugin_TP2_1.so
+```
