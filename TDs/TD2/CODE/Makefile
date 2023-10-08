@@ -4,7 +4,6 @@ EXE= TP2_1 \
 	TP2_5 \
 	TP2_6 \
 	TP2_7 \
-	TP2_7_bis \
 	TP2_8 
 
 all: $(EXE)
