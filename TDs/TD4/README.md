@@ -218,7 +218,7 @@ Function: 'main'
 [GRAPHVIZ] Generating CFG of function main in file <main_test3.c_8_main.dot>
 ```
 
-![main](main_test3.c_8_main_q5.png)
+![main](./CODE/main_test3.c_8_main_q5.png)
 
 ## Q6
 
