@@ -1,12 +1,11 @@
-EXE= TP3_1 \
+EXE= TP3_1_old \
+	TP3_1 \
 	TP3_2 \
 	TP3_3 \
-	TP3_4 \
 	TP3_5 \
 	TP3_6 \
-	TP3_6_bis \
 	TP3_7 \
-	TP3_8
+	TP3_8 
 
 all: $(EXE)
 
@@ -21,7 +20,7 @@ CFLAGS=-g -O3
 
 
 libplugin_%.so: plugin_%.cpp
-	$(CXX) $(PLUGIN_FLAGS) -o $@ $<
+	$(CXX) $(PLUGIN_FLAGS) $(GMP_CFLAGS) -o $@ $<
 
 % : libplugin_%.so test2.c
 	OMPI_MPICC=$(CC) $(MPICC) test2.c $(CFLAGS) -o $@ -fplugin=./$< 

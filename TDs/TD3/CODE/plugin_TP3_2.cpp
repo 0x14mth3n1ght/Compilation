@@ -30,15 +30,17 @@ void print_if_mpi_coll(const gimple* stmt)
     if (is_gimple_call(stmt)) {
         const tree t = gimple_call_fndecl(stmt);
         const char* ident = IDENTIFIER_POINTER(DECL_NAME(t));
-        if (strncmp("MPI_", ident, 4) == 0) {
-            printf("\tMPI COLLECTIVE: '%s'\n", ident);
+        for (int i = 0; i < LAST_AND_UNUSED_MPI_COLLECTIVE_CODE; i++) {
+            if (strcmp(mpi_collective_name[i], ident) == 0) {
+                printf("\tMPI COLLECTIVE: '%s'\n", ident);
+            }
         }
     }
 }
 
 const pass_data my_pass_data = {
     .type = GIMPLE_PASS,
-    .name = "TD3 Q1",
+    .name = "TD3 Q2",
     .optinfo_flags = OPTGROUP_NONE,
     .tv_id = TV_OPTIMIZE,
     .properties_required = 0,

@@ -3,11 +3,13 @@
 ## Partie 1
 
 ```
-wget --mirror https://ftp.gnu.org/gnu/gcc/gcc-12.2.0/
-../configure --prefix=/home/night/gcc-10.2.0 
+wget https://ftp.gnu.org/gnu/gcc/gcc-12.2.0/gcc-12.2.0.tar.gz
+tar -xvf gcc-12.2.0.tar.gz
+mkdir gcc-12.2.0/build; cd gcc-12.2.0/build 
+../configure --prefix=/home/night/gcc-12.2.0 
 --enable-languages=c,c++,fortran --enable-plugin --disable-bootstrap --disable-multilib
 make install
-~/gcc12.2.0/bin/gcc
+~/gcc-12.2.0/bin/gcc
 ```
 
 ```
