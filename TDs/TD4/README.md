@@ -152,10 +152,195 @@ extern void free_dominance_info_for_region (function *,
 					    enum cdi_direction,
 					    vec<basic_block>);
 ...
-static inline void
-checking_verify_dominators (cdi_direction dir)
-{
-  if (flag_checking)
-    verify_dominators (dir);
+/* cast vec en auto_vec */
+extern auto_vec<basic_block> get_all_dominated_blocks (enum cdi_direction,
+						       basic_block);
+```
+
+On retrouve la question 1 (on considère le noeud lui même): même dominance + **"les noeuds étudiés sont comptés eux-mêmes"**
+
+```bash
+~/gcc12/bin/g++ -I`~/gcc12/bin/gcc -print-file-name=plugin`/include -g -Wall -fno-rtti -shared -fPIC  -o libplugin_TP4_5.so plugin_TP4_5.cpp
+OMPI_MPICC=~/gcc12/bin/gcc mpicc test3.c -g -O3 -o TP4_5 -fplugin=./libplugin_TP4_5.so
+Function: 'main'
+        BB 02
+                >> 02
+                >> 10
+                >> 12
+                >> 11
+                >> 03
+                >> 08
+                >> 04
+                >> 09
+                >> 06
+                >> 05
+                >> 07
+        BB 03
+                >> 03
+                >> 08
+                >> 04
+                >> 09
+                >> 06
+                >> 05
+                >> 07
+        BB 04
+                >> 04
+                >> 09
+                >> 06
+                >> 05
+                >> 07
+        BB 05
+                >> 05
+        BB 06
+                >> 06
+                >> 07
+        BB 07
+                >> 07
+        BB 08
+                >> 08
+        BB 09
+                >> 09
+        BB 10
+                >> 10
+                >> 12
+                >> 11
+                >> 03
+                >> 08
+                >> 04
+                >> 09
+                >> 06
+                >> 05
+                >> 07
+        BB 11
+                >> 11
+        BB 12
+                >> 12
+[GRAPHVIZ] Generating CFG of function main in file <main_test3.c_8_main.dot>
+```
+
+![main](main_test3.c_8_main_q5.png)
+
+## Q6
+
+On modifie dans `FOR_EACH_BB_FN`:
+
+```c++
+printf("\tBB %02d\n", bb->index);
+auto_vec<basic_block> dominated = get_all_dominated_blocks(CDI_DOMINATORS, bb);
+for (unsigned int i = 0; i < dominated.length(); i++) {
+        if (bb->index != dominated[i]->index){
+                printf("\t\t>> %02d\n", dominated[i]->index);
+        }
 }
+```
+
+```bash
+[GRAPHVIZ] Generating CFG of function main in file <main_test3.c_8_main_q5.dot>
+~/gcc12/bin/g++ -I`~/gcc12/bin/gcc -print-file-name=plugin`/include -g -Wall -fno-rtti -shared -fPIC  -o libplugin_TP4_6.so plugin_TP4_6.cpp
+OMPI_MPICC=~/gcc12/bin/gcc mpicc test3.c -g -O3 -o TP4_6 -fplugin=./libplugin_TP4_6.so
+Function: 'main'
+        MPI COLLECTIVE: 'MPI_Init' (code: 0)
+        BB 02
+                >> 10
+                >> 12
+                >> 11
+                >> 03
+                >> 08
+                >> 04
+                >> 09
+                >> 06
+                >> 05
+                >> 07
+        MPI COLLECTIVE: 'MPI_Barrier' (code: 4)
+        BB 03
+                >> 08
+                >> 04
+                >> 09
+                >> 06
+                >> 05
+                >> 07
+        Split the block 04
+        MPI COLLECTIVE: 'MPI_Barrier' (code: 4)
+        BB 04
+                >> 13
+                >> 05
+                >> 06
+                >> 09
+                >> 07
+        MPI COLLECTIVE: 'MPI_Barrier' (code: 4)
+        BB 13
+                >> 05
+                >> 06
+                >> 09
+                >> 07
+        BB 05
+        BB 06
+                >> 07
+        BB 07
+        MPI COLLECTIVE: 'MPI_Barrier' (code: 4)
+        BB 08
+        BB 09
+        BB 10
+                >> 12
+                >> 11
+                >> 03
+                >> 08
+                >> 04
+                >> 13
+                >> 05
+                >> 06
+                >> 09
+                >> 07
+        MPI COLLECTIVE: 'MPI_Finalize' (code: 1)
+        BB 11
+        BB 12
+```
+
+## Q7
+
+a)
+
+On retrouve le résultat de la question2: même post-dominance + **"les noeuds étudiés sont comptés eux-mêmes"**
+
+
+```c++
+[GRAPHVIZ] Generating CFG of function main in file <main_test3.c_8_main.dot>
+~/gcc12/bin/g++ -I`~/gcc12/bin/gcc -print-file-name=plugin`/include -g -Wall -fno-rtti -shared -fPIC  -o libplugin_TP4_7.so plugin_TP4_7.cpp
+OMPI_MPICC=~/gcc12/bin/gcc mpicc test3.c -g -O3 -o TP4_7 -fplugin=./libplugin_TP4_7.so
+Function: 'main'
+        MPI COLLECTIVE: 'MPI_Init' (code: 0)
+        BB 02
+        MPI COLLECTIVE: 'MPI_Barrier' (code: 4)
+        BB 03
+        Split the block 04
+        MPI COLLECTIVE: 'MPI_Barrier' (code: 4)
+        BB 04
+        MPI COLLECTIVE: 'MPI_Barrier' (code: 4)
+        BB 13
+        BB 05
+        BB 06
+        BB 07
+        MPI COLLECTIVE: 'MPI_Barrier' (code: 4)
+        BB 08
+        BB 09
+                >> 05
+        BB 10
+                >> 09
+                >> 02
+                >> 05
+        MPI COLLECTIVE: 'MPI_Finalize' (code: 1)
+        BB 11
+        BB 12
+                >> 11
+                >> 10
+                >> 08
+                >> 07
+                >> 06
+                >> 04
+                >> 03
+                >> 09
+                >> 02
+                >> 05
+[GRAPHVIZ] Generating CFG of function main in file <main_test3.c_8_main_q7.dot>
+rm libplugin_TP4_6.so libplugin_TP4_5.so libplugin_TP4_7.so
 ```
