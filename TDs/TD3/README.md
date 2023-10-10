@@ -19,9 +19,9 @@ Function: 'main'
         MPI COLLECTIVE: 'MPI_Finalize'
 ```
 
-![mpi_call_test_0](./mpi_call_test2.c_7_0_ini.png)
+![mpi_call_test_0](./CODE/mpi_call_test2.c_7_0_ini.png)
 
-![main_26_0](./main_test2.c_26_0_ini.png)
+![main_26_0](./CODE/main_test2.c_26_0_ini.png)
 
 **Pour main**:
 
@@ -134,9 +134,9 @@ Function: 'main'
 [GRAPHVIZ] Generating CFG of function main in file <main_test2.c_26_main.dot>
 ```
 
-![mpi_call_7](./mpi_call_test2.c_7_mpi_call.png)
+![mpi_call_7](./CODE/mpi_call_test2.c_7_mpi_call.png)
 
-![main_26][./main_test2.c_26_main.png]
+![main_26][./CODE/main_test2.c_26_main.png]
 
 ## Q7
 
@@ -163,9 +163,9 @@ Function: 'main'
         Function has at least one BB with 2+ MPI Collectives: 0
 ```
 
-![mpi_call_7.2](./mpi_call_test2.c_7_mpi_call.png)
+![mpi_call_7.2](./CODE/mpi_call_test2.c_7_mpi_call.png)
 
-![main_26.2](./main_test2.c_26_main.png)
+![main_26.2](./CODE/main_test2.c_26_main.png)
 
 ## Q8
 
@@ -186,6 +186,6 @@ Function: 'main'
 rm libplugin_TP3_6.so libplugin_TP3_1.so libplugin_TP3_7.so libplugin_TP3_5.so libplugin_TP3_1_old.so libplugin_TP3_2.so libplugin_TP3_3.so libplugin_TP3_8.so
 ```
 
-![mpi_call_7.3](./mpi_call_test2.c_7_mpi_call.png)
+![mpi_call_7.3](./CODE/mpi_call_test2.c_7_mpi_call.png)
 
-![main_26.3](./main_test2.c_26_main.png)
+![main_26.3](./CODE/main_test2.c_26_main.png)

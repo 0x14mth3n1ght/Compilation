@@ -55,7 +55,7 @@ i.e (dominance dans le graphe inverse)
 
 ## Q3
 
-** Frontière dominance **
+**Frontière dominance**
 
 *premier noeuds qui ne sont pas dans le cycle de dominance?*
 
@@ -94,7 +94,7 @@ i.e (dominance dans le graphe inverse)
 
 ## Q4
 
-** Frontière post-dominance **
+**Frontière post-dominance**
 
 Pour chaque noeud v, donner l'ensemble des noeuds n'étant pas post-dominés
 strictement par ce noeud v mais dont v post-domine un successeur (frontière de
