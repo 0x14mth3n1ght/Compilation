@@ -320,6 +320,10 @@ Executing my_pass with function main
 
 ## Q6
 
+- `FOR_EACH_BB_FN`: contient les basic blocks entre la source et le puits exclus
+
+- `FOR_ALL_BB_FN`: contient **tous** les basic blocks (**source** et **puits**) compris 
+
 On éxécute:
 
 ```c++

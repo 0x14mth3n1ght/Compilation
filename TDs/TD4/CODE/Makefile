@@ -1,31 +1,30 @@
-all: TP4_1.pgr
+EXE= TP4_5 \
+	TP4_6 \
+	TP4_7
+	
+all: $(EXE)
 
-CPP=g++_1110
-CC=gcc_1110
+CXX=~/gcc12/bin/g++
+CC=~/gcc12/bin/gcc
 
-FILE=test3.c
+MPICC=mpicc
 
-MPI_PATH=`dirname \` which mpicc \` `
-MPI_FLAGS=-I$(MPI_PATH)/../include/mpi -L$(MPI_PATH)/../lib -lmpi
-PLUGIN_FLAGS=-I`gcc -print-file-name=plugin`/include -g -Wall -fno-rtti -shared -fPIC
+PLUGIN_FLAGS=-I`$(CC) -print-file-name=plugin`/include -g -Wall -fno-rtti -shared -fPIC
 
 CFLAGS=-g -O3
 
 
-libplugin.so: plugin_TP2_1.cpp
-	 $(CPP) $(PLUGIN_FLAGS) -o libplugin.so $<
+libplugin_%.so: plugin_%.cpp
+	$(CXX) $(PLUGIN_FLAGS) $(GMP_CFLAGS) -o $@ $<
 
-%.so: plugin_%.cpp
-	$(CPP) $(PLUGIN_FLAGS) -o $@ $<
+% : libplugin_%.so test3.c
+	OMPI_MPICC=$(CC) $(MPICC) test3.c $(CFLAGS) -o $@ -fplugin=./$< 
 
-%.pgr: %.so $(FILE)
-	gcc $(FILE) $(CFLAGS) -o $@ $(MPI_FLAGS) -fplugin=./$< 
-
-%.pdf: %.dot
-	dot -Tpdf $< -o $@
+%.png: %.dot
+	dot -Tpng $< -o $@
 
 clean:
-	rm -rf *.pgr *.pdf
+	rm -rf $(EXE)
 
 clean_all: clean
-	rm -rf libplugin.so *.dot
+	rm -rf libplugin*.so *.dot
