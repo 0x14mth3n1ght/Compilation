@@ -1,6 +1,10 @@
-EXE= TP4_5 \
-	TP4_6 \
-	TP4_7
+EXE= TP5_1 \
+	TP5_2 \
+	TP5_3 \
+	TP5_4 \
+	TP5_5 \
+	TP5_6 \
+	TP5_7
 	
 all: $(EXE)
 
@@ -30,4 +34,4 @@ clean:
 	rm -rf $(EXE)
 
 clean_all: clean
-	rm -rf libplugin*.so *.dot
+	rm -rf libplugin*.so *.dot *.png

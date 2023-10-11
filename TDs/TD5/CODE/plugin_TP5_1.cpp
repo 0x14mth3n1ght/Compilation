@@ -751,7 +751,6 @@ void td5_bitmap_and_pdf_it(function * fun)
 /***************/
 /* A COMPLETER */
 /***************/
-/bin/bash: :wq : commande introuvable
 }
 
 
