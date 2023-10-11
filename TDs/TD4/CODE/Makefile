@@ -13,6 +13,7 @@ PLUGIN_FLAGS=-I`$(CC) -print-file-name=plugin`/include -g -Wall -fno-rtti -share
 
 CFLAGS=-g -O3
 
+DOT_FILES := $(wildcard *.dot)
 
 libplugin_%.so: plugin_%.cpp
 	$(CXX) $(PLUGIN_FLAGS) $(GMP_CFLAGS) -o $@ $<
@@ -21,10 +22,12 @@ libplugin_%.so: plugin_%.cpp
 	OMPI_MPICC=$(CC) $(MPICC) test3.c $(CFLAGS) -o $@ -fplugin=./$< 
 
 %.png: %.dot
-	dot -Tpng $< -o $@
+	dot -Tpng $< > $@
+
+png: $(patsubst %.dot,%.png,$(DOT_FILES))
 
 clean:
 	rm -rf $(EXE)
 
 clean_all: clean
-	rm -rf libplugin*.so *.dot
+	rm -rf libplugin*.so *.dot *.png
