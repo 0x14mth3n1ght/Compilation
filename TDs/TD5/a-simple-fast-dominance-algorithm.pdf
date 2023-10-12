@@ -1,0 +1,460 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+        "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
+<head>
+	<title>Les cours et interros</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<meta name="Author" xml:lang="fr" content="ARISE"/>
+	<meta name="description" xml:lang="fr" content="Les contributions des élèves au fil des ans sont stockées dans cette section"/>
+	<meta name="keywords" xml:lang="fr" content=""/>
+	
+	<link rel="stylesheet" href="/css.php?t=default&amp;m=93d3160d8ba382af61a986512fa47754&amp;file[]=general&amp;file[]=banner&amp;file[]=navbar&amp;file[]=menu&amp;file[]=theme&amp;file[]=calendar&amp;file[]=anniv&amp;file[]=poll&amp;file[]=mini.rer" type="text/css" />
+
+	<script type="text/javascript">
+	//<![CDATA[
+		// Add a script element as a child of the body
+		function downloadJSAtOnload() {
+			var element = document.createElement("script");
+			element.src = "/js.js?t=default&m=3cfe27d7416199574434ac0abd072ef9&file[]=launcher";
+			document.body.appendChild(element);
+		}
+
+		// Check for browser support of event handling capability
+		if (window.addEventListener)
+			window.addEventListener("load", downloadJSAtOnload, false);
+		else if (window.attachEvent)
+			window.attachEvent("onload", downloadJSAtOnload);
+		else
+			window.onload = downloadJSAtOnload;
+
+		// Codes: s!rt3t, !n0eMnrutU, ab\x27\045'%(\u0028\x26&
+	//]]>
+	</script>
+	<link rel="alternate" type="application/rss+xml" title="Flux RSS des news" href="/rss.php" />
+</head>
+
+<body>
+
+<!--[if IE ]>
+<div class="error">
+    <img src="/images/anti-IE.png" alt="Logo anti Internet Explorer"
+        style="vertical-align: middle" />
+    <strong>
+        Vous utilisez Internet Explorer. Essayez <a title="Essayer Firefox"
+        href="http://www.mozilla-europe.org/fr/products/firefox/">Firefox</a>,
+        pour une meilleure navigation. Plus d'informations <a href="/firefox.php"
+        title="Pourquoi est-ce que je vois ce texte ?">ici</a>.
+    </strong>
+</div>
+<![endif]-->
+
+<!-- le bandeau -->
+<table id="banner">
+	<tbody>
+		<tr>
+			<td>
+				<div class="connect">
+					<form id="f" action="https://www.iiens.net/etudiants/cours/S5/CA_Compilation_Avancee/TD/2020-2021/td5/a-simple-fast-dominance-algorithm.pdf" method="post">
+																	<input type="submit" value="Connexion AriseID" name="slp"/>
+										</form>
+				</div>
+			</td>
+			<td>
+				<form method="post" action="search">
+					<div class="search">
+						Chercher sur ce site
+						<input type="text" size="12" name="q"/>
+						<input type="submit" value="OK" name="sa"/>
+					</div>
+				</form>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<!-- image de titre -->
+<div id="banniere">
+	&nbsp;
+</div>
+<!-- barre de localisation -->
+<div id="localisation">
+	<div id="ariane">
+		----&nbsp;Vous êtes ici&nbsp;:
+					&nbsp;/&nbsp;<a href="/">Accueil</a>
+					&nbsp;/&nbsp;<a href="/etudiants/index">L'espace étudiant</a>
+					&nbsp;/&nbsp;<a href="/etudiants/cours/index">cours</a>
+			</div>
+	
+	<div id="managetheme">
+		<form method="post" action="">
+		<div>
+			Thème&nbsp;:
+			<select name="new_theme">
+<option value="default" selected="selected">Default</option>
+<option value="modern">Modern</option>
+<option value="dark">Dark</option>
+</select>
+
+			<input type="submit" value="Changer" />
+		</div>
+		</form>
+	</div>
+</div>
+<table class="main" id="main">
+	<tbody>
+	<tr>
+		<td class="menu">
+						<ul id="menu">
+	<li class="section">
+		<a href="/etudiants/index">			Étudiants
+		</a>	</li>
+			<li>
+			<a href="/etudiants/account/">
+							<img src="/icons/restricted.png" alt="*" title="Restreint"/>
+							Votre compte
+			</a>
+		</li>
+			<li>
+			<a href="/etudiants/trombi.php">
+							<img src="/icons/unrestricted.png" alt=""/>
+							Trombinoscope
+			</a>
+		</li>
+			<li>
+			<a href="/etudiants/edt.php">
+							<img src="/icons/unrestricted.png" alt=""/>
+							Emplois du temps
+			</a>
+		</li>
+			<li>
+			<a href="/etudiants/siteweb.php">
+							<img src="/icons/unrestricted.png" alt=""/>
+							Les pages perso
+			</a>
+		</li>
+			<li>
+			<a href="/etudiants/cours">
+							<img src="/icons/restricted.png" alt="*" title="Restreint"/>
+							Cours et interros
+			</a>
+		</li>
+			<li>
+			<a href="/etudiants/stages.php">
+							<img src="/icons/restricted.png" alt="*" title="Restreint"/>
+							Stages
+			</a>
+		</li>
+			<li>
+			<a href="/etudiants/photos">
+							<img src="/icons/restricted.png" alt="*" title="Restreint"/>
+							Photos
+			</a>
+		</li>
+			<li>
+			<a href="http://etranger.iiens.net/">
+							<img src="/icons/unrestricted.png" alt=""/>
+							La 3A à l'étranger
+			</a>
+		</li>
+			<li>
+			<a href="http://wiki.iiens.net/">
+							<img src="/icons/unrestricted.png" alt=""/>
+							Le Wiki des élèves
+			</a>
+		</li>
+			<li>
+			<a href="http://agora.iiens.net/">
+							<img src="/icons/unrestricted.png" alt=""/>
+							Le Forum des élèves
+			</a>
+		</li>
+		<li class="section">
+		<a href="/entreprises">			Entreprises
+		</a>	</li>
+			<li>
+			<a href="/entreprises/cv.php">
+							<img src="/icons/unrestricted.png" alt=""/>
+							Les CVs des élèves
+			</a>
+		</li>
+			<li>
+			<a href="/entreprises/stages.php">
+							<img src="/icons/unrestricted.png" alt=""/>
+							Proposer un stage
+			</a>
+		</li>
+			<li>
+			<a href="/contact.php?dest=1">
+							<img src="/icons/unrestricted.png" alt=""/>
+							Partenariat BDE
+			</a>
+		</li>
+			<li>
+			<a href="http://forumiie.iiens.net/">
+							<img src="/icons/unrestricted.png" alt=""/>
+							Horizons Informatiques
+			</a>
+		</li>
+			<li>
+			<a href="http://www.diese.org/">
+							<img src="/icons/unrestricted.png" alt=""/>
+							Junior Entreprise : Dièse
+			</a>
+		</li>
+			<li>
+			<a href="http://www.ensiie.fr/">
+							<img src="/icons/unrestricted.png" alt=""/>
+							Notre école : l'ensiie
+			</a>
+		</li>
+		<li class="section">
+		<a href="/assoces">			Associations
+		</a>	</li>
+			<li>
+			<a href="http://bde.iiens.net/">
+							<img src="/icons/unrestricted.png" alt=""/>
+							Bureau des élèves
+			</a>
+		</li>
+			<li>
+			<a href="http://arise.iiens.net/">
+							<img src="/icons/unrestricted.png" alt=""/>
+							ARISE (Nous)
+			</a>
+		</li>
+			<li>
+			<a href="http://resiie.iiens.net/">
+							<img src="/icons/unrestricted.png" alt=""/>
+							Les logements (ResIIE)
+			</a>
+		</li>
+			<li>
+			<a href="/assoces?t=1">
+							<img src="/icons/unrestricted.png" alt=""/>
+							Associations de services
+			</a>
+		</li>
+			<li>
+			<a href="/assoces?t=2">
+							<img src="/icons/unrestricted.png" alt=""/>
+							Associations sportives
+			</a>
+		</li>
+			<li>
+			<a href="/assoces?t=3">
+							<img src="/icons/unrestricted.png" alt=""/>
+							Évènements
+			</a>
+		</li>
+			<li>
+			<a href="/assoces?t=4">
+							<img src="/icons/unrestricted.png" alt=""/>
+							Loisirs
+			</a>
+		</li>
+			<li>
+			<a href="/assoces?t=5">
+							<img src="/icons/unrestricted.png" alt=""/>
+							Culture et créativité
+			</a>
+		</li>
+		<li class="section">
+		<a href="https://wiki.iiens.net/doku.php?id=assoce:arise#liste_des_services_d_arise">			Services
+		</a>	</li>
+			<li>
+			<a href="http://arise.iiens.net/">
+							<img src="/icons/unrestricted.png" alt=""/>
+							Plus d'informations
+			</a>
+		</li>
+			<li>
+			<a href="https://webmail.ensiie.fr/">
+							<img src="/icons/unrestricted.png" alt=""/>
+							WebMail
+			</a>
+		</li>
+			<li>
+			<a href="https://phpmyadmin.iiens.net/">
+							<img src="/icons/restricted.png" alt="*" title="Restreint"/>
+							Base de données
+			</a>
+		</li>
+			<li>
+			<a href="http://ircstats.iiens.net/">
+							<img src="/icons/restricted.png" alt="*" title="Restreint"/>
+							Les stats IRC
+			</a>
+		</li>
+			<li>
+			<a href="https://listes.iiens.net/">
+							<img src="/icons/restricted.png" alt="*" title="Restreint"/>
+							Mailing listes
+			</a>
+		</li>
+			<li>
+			<a href="https://paste.iiens.net">
+							<img src="/icons/unrestricted.png" alt=""/>
+							Pastebin
+			</a>
+		</li>
+			<li>
+			<a href="https://estudines.iiens.net">
+							<img src="/icons/unrestricted.png" alt=""/>
+							Informations Estudines
+			</a>
+		</li>
+	</ul>
+														</td>
+		<td class="contenu">
+						<div class="error">
+	Veuillez vous identifier pour accéder à cette page. <br />
+	<form action="https://www.iiens.net/etudiants/cours/S5/CA_Compilation_Avancee/TD/2020-2021/td5/a-simple-fast-dominance-algorithm.pdf" method="post">
+		<input type="submit" value="S'identifier" name="slp" />
+	</form>
+</div>		</td>
+		<td class="conneries">
+			<div id="calendrier">
+	<table class="calendar">
+<tr>
+<td align="center" valign="top"><a href="/index.php?y=2023&amp;m=9">&lt;&lt;</a></td>
+<td align="center" valign="top" class="calendarTitle" colspan="5">Octobre 2023</td>
+<td align="center" valign="top"><a href="/index.php?y=2023&amp;m=11">&gt;&gt;</a></td>
+</tr>
+<tr>
+<td align="center" valign="top" class="calendarHeader">L</td>
+<td align="center" valign="top" class="calendarHeader">M</td>
+<td align="center" valign="top" class="calendarHeader">M</td>
+<td align="center" valign="top" class="calendarHeader">J</td>
+<td align="center" valign="top" class="calendarHeader">V</td>
+<td align="center" valign="top" class="calendarHeader">S</td>
+<td align="center" valign="top" class="calendarHeader">D</td>
+</tr>
+<tr>
+<td class="calendar" align="right" valign="top">&nbsp;</td>
+<td class="calendar" align="right" valign="top">&nbsp;</td>
+<td class="calendar" align="right" valign="top">&nbsp;</td>
+<td class="calendar" align="right" valign="top">&nbsp;</td>
+<td class="calendar" align="right" valign="top">&nbsp;</td>
+<td class="calendar" align="right" valign="top">&nbsp;</td>
+<td class="calendar" align="right" valign="top">1</td>
+</tr>
+<tr>
+<td class="calendar" align="right" valign="top">2</td>
+<td class="calendar" align="right" valign="top">3</td>
+<td class="calendar" align="right" valign="top">4</td>
+<td class="calendar" align="right" valign="top">5</td>
+<td class="calendar" align="right" valign="top">6</td>
+<td class="calendar" align="right" valign="top">7</td>
+<td class="calendar" align="right" valign="top">8</td>
+</tr>
+<tr>
+<td class="calendar" align="right" valign="top">9</td>
+<td class="calendar" align="right" valign="top">10</td>
+<td class="calendar" align="right" valign="top">11</td>
+<td class="calendarToday" align="right" valign="top">12</td>
+<td class="calendar" align="right" valign="top">13</td>
+<td class="calendar" align="right" valign="top">14</td>
+<td class="calendar" align="right" valign="top">15</td>
+</tr>
+<tr>
+<td class="calendar" align="right" valign="top">16</td>
+<td class="calendar" align="right" valign="top">17</td>
+<td class="calendar" align="right" valign="top">18</td>
+<td class="calendar" align="right" valign="top">19</td>
+<td class="calendar" align="right" valign="top">20</td>
+<td class="calendar" align="right" valign="top">21</td>
+<td class="calendar" align="right" valign="top">22</td>
+</tr>
+<tr>
+<td class="calendar" align="right" valign="top">23</td>
+<td class="calendar" align="right" valign="top">24</td>
+<td class="calendar" align="right" valign="top">25</td>
+<td class="calendar" align="right" valign="top">26</td>
+<td class="calendar" align="right" valign="top">27</td>
+<td class="calendar" align="right" valign="top">28</td>
+<td class="calendar" align="right" valign="top">29</td>
+</tr>
+<tr>
+<td class="calendar" align="right" valign="top">30</td>
+<td class="calendar" align="right" valign="top">31</td>
+<td class="calendar" align="right" valign="top">&nbsp;</td>
+<td class="calendar" align="right" valign="top">&nbsp;</td>
+<td class="calendar" align="right" valign="top">&nbsp;</td>
+<td class="calendar" align="right" valign="top">&nbsp;</td>
+<td class="calendar" align="right" valign="top">&nbsp;</td>
+</tr>
+</table>
+
+</div>
+			<div id="anniv">
+	<div class="titre">Anniversaires</div>
+			<div class="personne">
+			Le jeudi 12 octobre<br/>
+			<a href="/etudiants/trombi.php?nom=DETEIX&amp;prenom=Prudence&amp;tsub=1">Prudence <i>Belek</i> DETEIX</a><br/>
+			(20 ans)
+		</div>
+			<div class="personne">
+			Le samedi 14 octobre<br/>
+			<a href="/etudiants/trombi.php?nom=SAES-VINCENSINI&amp;prenom=Micka%C3%ABl&amp;tsub=1">Mickaël <i>Wozis</i> SAES-VINCENSINI</a><br/>
+			(21 ans)
+		</div>
+			<div class="personne">
+			Le lundi 16 octobre<br/>
+			<a href="/etudiants/trombi.php?nom=DEPAOLI&amp;prenom=Tessa&amp;tsub=1">Tessa <i>Saké</i> DEPAOLI</a><br/>
+			(22 ans)
+		</div>
+			<div class="personne">
+			Le lundi 16 octobre<br/>
+			<a href="/etudiants/trombi.php?nom=GARREAU&amp;prenom=No%C3%A9&amp;tsub=1">Noé <i>Bocaj</i> GARREAU</a><br/>
+			(21 ans)
+		</div>
+			<div class="personne">
+			Le mercredi 18 octobre<br/>
+			<a href="/etudiants/trombi.php?nom=TAILLEFUMIER&amp;prenom=Th%C3%A9o&amp;tsub=1">Théo <i>Thets</i> TAILLEFUMIER</a><br/>
+			(21 ans)
+		</div>
+			<div class="personne">
+			Le lundi 23 octobre<br/>
+			<a href="/etudiants/trombi.php?nom=B%C3%89CHU&amp;prenom=Lucie&amp;tsub=1">Lucie <i>Madoqua</i> BÉCHU</a><br/>
+			(23 ans)
+		</div>
+	</div>
+			<div id="poll">
+	<div class="titre">Sondage</div>
+	<div class="question">Quelle est la meilleur colle ?</div>
+						<ul>
+									<li>UHU</li>
+									<li>Cléopâtre</li>
+									<li>Scotch</li>
+									<li>Le blanco</li>
+							</ul>
+			<div>Il faut se logger pour voter.</div>
+			<div>Voir les <a href="?&amp;poll_show=1#poll">résultats</a>&nbsp;?</div>					<p>Voir <a href="/pollhisto.php" title="Historique des sondages">l'historique des sondages</a>&nbsp;?</p>
+	</div>
+		</td>
+	</tr>
+	</tbody>
+</table>
+<div id="footmenu">
+	<span class='right'><a href="/contact.php?dest=0">Nous contacter</a></span>
+	<span class='left'><a href="http://validator.w3.org/check?uri=referer"><img src="/images/valid-xhtml11" alt="Valid XHTML 1.1" /></a>
+		<a href="http://www.spreadfirefox.com/?q=affiliates&amp;id=0&amp;t=70"><img alt="Get Firefox!" title="Get Firefox!" src="/images/getFirefox.gif"/></a>
+		<a href="https://twitter.com/arise_iie"><img src="/images/logo_twitter.png" alt="Suivez-nous sur Twitter" title="Suivez-nous sur Twitter" /></a>
+	</span>
+Ce portail et son contenu sont &copy;2003-2023 ARISE
+</div>
+
+</body></html>
+<!-- Temps de calcul des differentes parties :
+all page                      132.265 ms
+libarise                      116.952 ms
+rendering                     7.431 ms
+FrameSets\Banner              0.035 ms
+FrameSets\Navbar              0.032 ms
+FrameSets\Menu                0.021 ms
+Pages\Cours                   0.01 ms
+FrameSets\Theme               0.28 ms
+FrameSets\Calendar            0.871 ms
+FrameSets\Anniv               3.339 ms
+FrameSets\PollView            0.039 ms
+smarty display                2.358 ms
+//-->

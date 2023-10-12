@@ -409,8 +409,7 @@ void td4_q5_q6_print_dominators(function * fun)
 	basic_block bb;
 	FOR_ALL_BB_FN(bb, fun)
 	{
-		vec<basic_block> dominators;
-//		dominators = get_dominated_by(CDI_DOMINATORS, bb);
+		auto_vec<basic_block> dominators;
 		dominators = get_all_dominated_blocks(CDI_DOMINATORS, bb);
 
 		printf("Basic block BB %d dominates :", bb->index);
@@ -455,10 +454,10 @@ void td4_q7_print_postdominators(function * fun)
 	basic_block bb;
 	FOR_ALL_BB_FN(bb, fun)
 	{
-		vec<basic_block> postdoms;
+		auto_vec<basic_block> postdoms;
 		postdoms = get_all_dominated_blocks(CDI_POST_DOMINATORS, bb);
 
-		printf("Basic block BB %d dominates :", bb->index);
+		printf("Basic block BB %d post-dominates :", bb->index);
 
 		int i;
 		int size = postdoms.length();
@@ -723,7 +722,7 @@ void td4_dom_and_postdom(function * fun)
 	/******************************/
 	/**** TD4 - QUESTION 5 & 6 ****/
 	/******************************/
-	calculate_dominance_info (CDI_DOMINATORS);	
+	calculate_dominance_info(CDI_DOMINATORS);	
 	td4_q5_q6_print_dominators(fun);
 	/******************************/
 	/** TD4 - FIN QUESTION 5 & 6 **/
@@ -733,14 +732,14 @@ void td4_dom_and_postdom(function * fun)
 	/******************************/
 	/****   TD4 - QUESTION 7   ****/
 	/******************************/
-	calculate_dominance_info (CDI_POST_DOMINATORS);	
+	calculate_dominance_info(CDI_POST_DOMINATORS);	
 	td4_q7_print_postdominators(fun);	
 	/******************************/
 	/**   TD4 - FIN QUESTION 7   **/
 	/******************************/
 
 //	td4_q8_print_dfs(fun);
-	td4_q8_compute_post_dominance_frontiers (fun);
+//	td4_q8_compute_post_dominance_frontiers (fun);
 
 }
 
@@ -821,6 +820,7 @@ class my_pass : public gimple_opt_pass
 			/**   TD3 - FIN QUESTION 5   **/
 			/******************************/
 
+			//split_blocks
 			td3_mpi_in_blocks(fun);
 
 			/******************************/
