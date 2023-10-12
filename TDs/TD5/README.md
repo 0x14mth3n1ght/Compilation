@@ -4,9 +4,9 @@
 
 ![0](CODE/main_test3.c_8_0_ini.png)
 
-![1](CODE/main_test3.c_8_1_ini.png)
+![1](CODE/main_test3.c_8_1_mpi.png)
 
-![2](CODE/main_test3.c_8_2_ini.png)
+![2](CODE/main_test3.c_8_2_split.png)
 
 ## Q1
 
