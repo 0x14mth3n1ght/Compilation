@@ -2,11 +2,11 @@
 
 `plugin_TP5_0.cpp`
 
-![0](main_test3.c_8_0_ini.png)
+![0](CODE/main_test3.c_8_0_ini.png)
 
-![1](main_test3.c_8_1_ini.png)
+![1](CODE/main_test3.c_8_1_ini.png)
 
-![2](main_test3.c_8_2_ini.png)
+![2](CODE/main_test3.c_8_2_ini.png)
 
 ## Q1
 

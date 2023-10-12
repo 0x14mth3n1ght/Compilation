@@ -8,10 +8,8 @@
 #include <function.h>
 #include <gimple-iterator.h>
 
-
 /* Global variable required for plugin to execute */
 int plugin_is_GPL_compatible;
-
 
 /* Global object (const) to represent my pass */
 const pass_data my_pass_data =
@@ -26,9 +24,6 @@ const pass_data my_pass_data =
 	0, /* todo_flags_start */
 	0, /* todo_flags_finish */
 };                                                                                                                                     
-
-
-
 
 /* Enum to represent the collective operations */
 enum mpi_collective_code {
@@ -56,7 +51,6 @@ void td_isol_print(int td)
 	printf("\n\n\n");
 }
 
-
 void function_isol_print(function *fun)
 {
 	printf("\n\n\n");
@@ -66,8 +60,6 @@ void function_isol_print(function *fun)
 	printf("/************************************************************************************************************************/\n");
 	printf("/************************************************************************************************************************/\n");
 	printf("\n\n\n");
-
- 
 }
 
 
@@ -76,8 +68,6 @@ void function_isol_print(function *fun)
 /*************************                       TD2                        *************************/ 
 /****************************************************************************************************/
 /****************************************************************************************************/
-
-
 
 
 /******************************/
@@ -121,19 +111,13 @@ void td2_q8_print_called_functions( basic_block bb )
 			t = gimple_call_fndecl( stmt ) ;
 			callee_name = IDENTIFIER_POINTER(DECL_NAME(t)) ;
 
-
 			printf("          |||++|||      - gimple statement is a function call: function called is \" %s \" \n", callee_name);
-
-
 		}
 	}
 }
 /******************************/
 /**   TD2 - FIN QUESTION 8   **/
 /******************************/
-
-
-
 
 /******************************/
 /**** TD2 - QUESTION 5 & 6 ****/
@@ -152,17 +136,12 @@ void td2_q5_q6_print_blocks(function * fun)
 		printf("          |||++||| BLOCK INDEX %d : LINE %d\n", bb->index, gimple_lineno(stmt));
 
 		td2_q8_print_called_functions(bb);
-
 	}
 }
 
 /******************************/
 /** TD2 - FIN QUESTION 5 & 6 **/
 /******************************/
-
-
-
-
 
 /****************************************************************************************************/
 /****************************************************************************************************/
@@ -171,14 +150,11 @@ void td2_q5_q6_print_blocks(function * fun)
 /****************************************************************************************************/
 
 
-
 /****************************************************************************************************/
 /****************************************************************************************************/
 /*************************                       TD3                        *************************/ 
 /****************************************************************************************************/
 /****************************************************************************************************/
-
-
 
 
 /******************************/
@@ -212,9 +188,7 @@ enum mpi_collective_code td3_q1_q2_q3_is_mpi_call( gimple * stmt, int bb_index)
 			}
 			i++ ;
 		} 
-
 	}
-
 
 	if ( returned_code != LAST_AND_UNUSED_MPI_COLLECTIVE_CODE )
 	{
@@ -222,17 +196,11 @@ enum mpi_collective_code td3_q1_q2_q3_is_mpi_call( gimple * stmt, int bb_index)
 	}
 
 	return returned_code ;
-
-
 }
 
 /******************************/
 /** TD3 - FIN QUESTION 1 à 3 **/
 /******************************/
-
-
-
-
 
 /******************************/
 /****   TD3 - QUESTION 5   ****/
@@ -249,11 +217,10 @@ void clean_aux_field( function * fun, long val )
 	}
 
 }
+
 /******************************/
 /**   TD3 - FIN QUESTION 5   **/
 /******************************/
-
-
 
 void td3_q1_q2_q3_q4_read_and_mark_mpi(function *fun)
 {
@@ -263,7 +230,6 @@ void td3_q1_q2_q3_q4_read_and_mark_mpi(function *fun)
 
 	FOR_EACH_BB_FN(bb,fun)
 	{
-
 		/* Iterate on gimple statements in the current basic block */
 		for (gsi = gsi_start_bb (bb); !gsi_end_p (gsi); gsi_next (&gsi))
 		{
@@ -283,12 +249,9 @@ void td3_q1_q2_q3_q4_read_and_mark_mpi(function *fun)
 			/******************************/
 			/** TD3 - FIN QUESTION 1 à 4 **/
 			/******************************/
-
 		}	
 	}
-
 }
-
 
 /******************************/
 /****   TD3 - QUESTION 7   ****/
@@ -368,7 +331,6 @@ void td3_q8_split_multiple_mpi_calls( function * fun )
 				{
 					split_block( bb, stmt ) ;
 				}
-
 			}
 		}
 	}
@@ -379,7 +341,6 @@ void td3_q8_split_multiple_mpi_calls( function * fun )
 /******************************/
 
 
-
 /****************************************************************************************************/
 /****************************************************************************************************/
 /*************************                     FIN TD3                      *************************/ 
@@ -387,14 +348,11 @@ void td3_q8_split_multiple_mpi_calls( function * fun )
 /****************************************************************************************************/
 
 
-
 /****************************************************************************************************/
 /****************************************************************************************************/
 /*************************                       TD4                        *************************/ 
 /****************************************************************************************************/
 /****************************************************************************************************/
-
-
 
 
 /******************************/
@@ -407,6 +365,7 @@ void td4_q5_q6_print_dominators(function * fun)
 	printf("DOMINATORS:\n");
 
 	basic_block bb;
+	calculate_dominance_info(CDI_DOMINATORS);
 	FOR_ALL_BB_FN(bb, fun)
 	{
 		auto_vec<basic_block> dominators;
@@ -424,14 +383,11 @@ void td4_q5_q6_print_dominators(function * fun)
 /******************************/
 			if(dominators[i]->index != bb->index)
 			{
-
 				printf(" { BB %d }", dominators[i]->index);
 			}
 /******************************/
 /**   TD4 - FIN QUESTION 6   **/
 /******************************/
-
-
 		}
 		printf("\n");
 	}
@@ -452,6 +408,7 @@ void td4_q7_print_postdominators(function * fun)
 	printf("POST-DOMINATORS:\n");
 
 	basic_block bb;
+	calculate_dominance_info(CDI_POST_DOMINATORS);
 	FOR_ALL_BB_FN(bb, fun)
 	{
 		auto_vec<basic_block> postdoms;
@@ -466,10 +423,8 @@ void td4_q7_print_postdominators(function * fun)
 		{
 			if(postdoms[i]->index != bb->index)
 			{
-
 				printf(" { BB %d }", postdoms[i]->index);
 			}
-
 		}
 		printf("\n");
 	}
@@ -478,7 +433,6 @@ void td4_q7_print_postdominators(function * fun)
 /******************************/
 /**   TD4 - FIN QUESTION 7   **/
 /******************************/
-
 
 
 /****************************************************************************************************/
@@ -502,15 +456,11 @@ void td4_q7_print_postdominators(function * fun)
 /****************************************************************************************************/
 
 
-
-
 /****************************************************************************************************/
 /****************************************************************************************************/
 /*************************                PLUGIN GRAPHVIZ                   *************************/
 /****************************************************************************************************/
 /****************************************************************************************************/
-
-
 
 
 /* Build a filename (as a string) based on function name */
@@ -537,13 +487,9 @@ static void cfgviz_internal_dump( function * fun, FILE * out, int td )
 	// Print the header line and open the main graph
 	fprintf(out, "Digraph G{\n");
 
-
-
 	/******************************/
 	/****   TD2 - QUESTION 7   ****/
 	/******************************/
-
-
 
 	FOR_ALL_BB_FN(bb,cfun)
 	{
@@ -555,7 +501,6 @@ static void cfgviz_internal_dump( function * fun, FILE * out, int td )
 		/******************************/
 		/****   TD3 - QUESTION 6   ****/
 		/******************************/
-
 
 		if(td == 3 && (long)bb->aux != LAST_AND_UNUSED_MPI_COLLECTIVE_CODE)
 		{
@@ -570,7 +515,6 @@ static void cfgviz_internal_dump( function * fun, FILE * out, int td )
 			/* Iterate on gimple statements in the current basic block */
 			for (gsi = gsi_start_bb (bb); !gsi_end_p (gsi); gsi_next (&gsi))
 			{
-
 				stmt = gsi_stmt(gsi);
 
 				enum mpi_collective_code returned_code ;
@@ -598,9 +542,7 @@ static void cfgviz_internal_dump( function * fun, FILE * out, int td )
 						}
 						i++ ;
 					} 
-
 				}
-
 
 				if ( returned_code != LAST_AND_UNUSED_MPI_COLLECTIVE_CODE )
 				{
@@ -646,13 +588,11 @@ static void cfgviz_internal_dump( function * fun, FILE * out, int td )
 	/**   TD2 - FIN QUESTION 7   **/
 	/******************************/
 
-
 	// Close the main graph
 	fprintf(out, "}\n");
 }
 
-void 
-cfgviz_dump( function * fun, const char * suffix, int td )
+void cfgviz_dump( function * fun, const char * suffix, int td )
 {
 	char * target_filename ; 
 	FILE * out ;
@@ -676,7 +616,6 @@ cfgviz_dump( function * fun, const char * suffix, int td )
 /*************************            FIN  PLUGIN GRAPHVIZ                 *************************/ 
 /****************************************************************************************************/
 /****************************************************************************************************/
-
 
 
 void td2_through_the_cfg(function * fun)
@@ -711,9 +650,6 @@ void td3_mpi_in_blocks(function * fun)
 /******************************/
 /**   TD3 - FIN QUESTION 8   **/
 /******************************/
-
-
-	
 }
 
 
@@ -722,7 +658,6 @@ void td4_dom_and_postdom(function * fun)
 	/******************************/
 	/**** TD4 - QUESTION 5 & 6 ****/
 	/******************************/
-	calculate_dominance_info(CDI_DOMINATORS);	
 	td4_q5_q6_print_dominators(fun);
 	/******************************/
 	/** TD4 - FIN QUESTION 5 & 6 **/
@@ -731,8 +666,7 @@ void td4_dom_and_postdom(function * fun)
 
 	/******************************/
 	/****   TD4 - QUESTION 7   ****/
-	/******************************/
-	calculate_dominance_info(CDI_POST_DOMINATORS);	
+	/******************************/	
 	td4_q7_print_postdominators(fun);	
 	/******************************/
 	/**   TD4 - FIN QUESTION 7   **/
@@ -751,7 +685,6 @@ void td5_bitmap_and_pdf_it(function * fun)
 /* A COMPLETER */
 /***************/
 }
-
 
 
 /* My new pass inheriting from regular gimple pass */
