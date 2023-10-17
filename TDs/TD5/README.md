@@ -131,113 +131,70 @@ gcc/cfganal.cc:   frontier information as returned by compute_dominance_frontier
 
 `cfganal.cc`
 
+( Entre parenthèses //pas utile
+
 Donc il faut modifier dans ce **parcours en profondeur** ce qui marchait pour la dominance -> frontière post dominance
 
-```c
-namespace {
-/* Store the data structures necessary for depth-first search.  */
-class depth_first_search
-  {
-public:
-    depth_first_search ();
+Plus bas : on se sert de cette fonction pour la **post-dominance**
 
-    basic_block execute (basic_block);
-    void add_bb (basic_block);
-
-private:
-  /* stack for backtracking during the algorithm */
-  auto_vec<basic_block, 20> m_stack;
-
-  /* record of basic blocks already seen by depth-first search */
-  auto_sbitmap m_visited_blocks;
-};
-}
-
-/* Mark the back edges in DFS traversal.
-   Return nonzero if a loop (natural or otherwise) is present.
-   Inspired by Depth_First_Search_PP described in:
-
-     Advanced Compiler Design and Implementation
-     Steven Muchnick
-     Morgan Kaufmann, 1997
-
-   and heavily borrowed from pre_and_rev_post_order_compute.  */
-
-bool
-mark_dfs_back_edges (struct function *fun)
+```c++
+void compute_dominance_frontiers (bitmap_head *frontiers)
 {
-  int *pre;
-  int *post;
-  int prenum = 1;
-  int postnum = 1;
-  bool found = false;
+  timevar_push (TV_DOM_FRONTIERS);
 
-  /* Allocate the preorder and postorder number arrays.  */
-  pre = XCNEWVEC (int, last_basic_block_for_fn (fun));
-  post = XCNEWVEC (int, last_basic_block_for_fn (fun));
-
-  /* Allocate stack for back-tracking up CFG.  */
-  auto_vec<edge_iterator, 20> stack (n_basic_blocks_for_fn (fun) + 1);
-
-  /* Allocate bitmap to track nodes that have been visited.  */
-  auto_sbitmap visited (last_basic_block_for_fn (fun));
-
-  /* None of the nodes in the CFG have been visited yet.  */
-  bitmap_clear (visited);
-
-  /* Push the first edge on to the stack.  */
-  stack.quick_push (ei_start (ENTRY_BLOCK_PTR_FOR_FN (fun)->succs));
-
-  while (!stack.is_empty ())
+  edge p;
+  edge_iterator ei;
+  basic_block b;
+  FOR_EACH_BB_FN (b, cfun)
     {
-      basic_block src;
-      basic_block dest;
-
-      /* Look at the edge on the top of the stack.  */
-      edge_iterator ei = stack.last ();
-      src = ei_edge (ei)->src;
-      dest = ei_edge (ei)->dest;
-      ei_edge (ei)->flags &= ~EDGE_DFS_BACK;
-
-      /* Check if the edge destination has been visited yet.  */
-      if (dest != EXIT_BLOCK_PTR_FOR_FN (fun) && ! bitmap_bit_p (visited,
-								 dest->index))
+      if (EDGE_COUNT (b->preds) >= 2)
 	{
-	  /* Mark that we have visited the destination.  */
-	  bitmap_set_bit (visited, dest->index);
-
-	  pre[dest->index] = prenum++;
-	  if (EDGE_COUNT (dest->succs) > 0)
+	  basic_block domsb = get_immediate_dominator (CDI_DOMINATORS, b);
+	  FOR_EACH_EDGE (p, ei, b->preds)
 	    {
-	      /* Since the DEST node has been visited for the first
-		 time, check its successors.  */
-	      stack.quick_push (ei_start (dest->succs));
+	      basic_block runner = p->src;
+	      if (runner == ENTRY_BLOCK_PTR_FOR_FN (cfun))
+		continue;
+
+	      while (runner != domsb)
+		{
+		  if (!bitmap_set_bit (&frontiers[runner->index], b->index))
+		    break;
+		  runner = get_immediate_dominator (CDI_DOMINATORS, runner);
+		}
 	    }
-	  else
-	    post[dest->index] = postnum++;
-	}
-      else
-	{
-	  if (dest != EXIT_BLOCK_PTR_FOR_FN (fun)
-	      && src != ENTRY_BLOCK_PTR_FOR_FN (fun)
-	      && pre[src->index] >= pre[dest->index]
-	      && post[dest->index] == 0)
-	    ei_edge (ei)->flags |= EDGE_DFS_BACK, found = true;
-
-	  if (ei_one_before_end_p (ei)
-	      && src != ENTRY_BLOCK_PTR_FOR_FN (fun))
-	    post[src->index] = postnum++;
-
-	  if (!ei_one_before_end_p (ei))
-	    ei_next (&stack.last ());
-	  else
-	    stack.pop ();
 	}
     }
 
-  free (pre);
-  free (post);
-
-  return found;
+  timevar_pop (TV_DOM_FRONTIERS);
 }
 ```
+
+**On change** (cf TD4):
+
+  - `b->preds` en `b->succs`
+  - `CDI_DOMINATORS` en `CDI_POST_DOMINATORS`
+  - `ENTRY_BLOCK_PTR_FOR_FN` en `EXIT_BLOCK_PTR_FOR_FN`
+
+```bash
+OMPI_MPICC=~/gcc12/bin/gcc mpicc test3.c -g -O3 -o TP5_1 -fplugin=./libplugin_TP5_1.so 
+plugin_init: Entering...
+plugin_init: Check ok...
+plugin_init: Pass added...
+plugin: gate... 
+         ... in function main
+plugin: execute...
+        BB 02: 
+        BB 03: 
+        BB 04: 3
+        BB 05: 4
+        BB 06: 4
+        BB 07: 6
+        BB 08: 3
+        BB 09: 4, 6
+        BB 10: 4, 6
+        BB 11: 10
+        BB 12: 
+```
+
+## Q2

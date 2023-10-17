@@ -8,7 +8,7 @@
 #include <function.h>
 #include <gimple-iterator.h>
 #include <dominance.h>
-#include <bitmap.h>                                                                                                                                
+#include <bitmap.h>                                                                                                                         
 
 //TD3
 /* Enum to represent the collective operations */
@@ -37,90 +37,45 @@ const char *print_func_name(function * fun)
 /***************** TD5 *******************/
 /*****************************************/
 
-// An array of bitmap of known and fixed size.
-class bitmap_array {
-public:
-    // Initialize a new array with the given length.
-    //
-    // Length must be non-zero.
-    bitmap_array(const size_t ll)
-        : ptr(XNEWVEC(bitmap, ll))
-        , len(ll)
-    {
-        for (size_t i = 0; i < this->len; i += 1)
-            this->ptr[i] = bitmap_alloc(NULL);
-    }
-
-    ~bitmap_array()
-    {
-        for (size_t i = 0; i < this->len; i += 1)
-            bitmap_release(this->ptr[i]);
-        free(this->ptr);
-    }
-
-    // Accesses the element at index `idx`. If the index is out of bound,
-    // the program will panic and exit with code 1.
-    bitmap_head& operator[](const size_t idx) const
-    {
-        if (idx >= this->length()) {
-            fprintf(stderr,
-                "ERROR: bitmap_array: idx(%ld) >= this->length(%ld)\n",
-                idx,
-                this->length());
-            exit(1);
-        }
-
-        return *this->ptr[idx];
-    }
-
-    // Number of bitmap_head in the array.
-    size_t length() const { return this->len; }
-
-private:
-    // Pointer to the array head.
-    bitmap* ptr;
-    // Size of the array.
-    size_t len;
-};
-
-void td5_q1_frontier(function *fun){
-  unsigned int bb_index, df_bb_index;
-  bitmap_iterator bi1, bi2;
+bitmap_head* bitmap_init(){
   basic_block bb;
-  bitmap_head *frontiers;
-
-  bitmap_initialize (&seen_in_insn, &bitmap_default_obstack);
-
-  EXECUTE_IF_SET_IN_BITMAP (all_blocks, 0, bb_index, bi1)
-    {
-      df_md_bb_local_compute (bb_index);
-    }
-
-  bitmap_release (&seen_in_insn);
-
-  frontiers = XNEWVEC (bitmap_head, last_basic_block_for_fn (cfun));
+  bitmap_head *frontiers = XNEWVEC (bitmap_head, last_basic_block_for_fn (cfun));
   FOR_ALL_BB_FN (bb, cfun)
     bitmap_initialize (&frontiers[bb->index], &bitmap_default_obstack);
+  return frontiers;
+}
 
-  compute_dominance_frontiers (frontiers);
+void td5_q1_frontier(function *fun, bitmap_head *frontiers){
+  timevar_push (TV_DOM_FRONTIERS);
 
-  /* Add each basic block's kills to the nodes in the frontier of the BB.  */
-  EXECUTE_IF_SET_IN_BITMAP (all_blocks, 0, bb_index, bi1)
+  edge p;
+  edge_iterator ei;
+  basic_block b;
+
+  FOR_EACH_BB_FN (b, fun)
+  {
+    if (EDGE_COUNT (b->succs) >= 2)
     {
-      bitmap kill = &df_md_get_bb_info (bb_index)->kill;
-      EXECUTE_IF_SET_IN_BITMAP (&frontiers[bb_index], 0, df_bb_index, bi2)
-	{
-	  basic_block bb = BASIC_BLOCK_FOR_FN (cfun, df_bb_index);
-	  if (bitmap_bit_p (all_blocks, df_bb_index))
-	    bitmap_ior_and_into (&df_md_get_bb_info (df_bb_index)->init, kill,
-				 df_get_live_in (bb));
-	}
-    }
+	    basic_block domsb = get_immediate_dominator (CDI_POST_DOMINATORS, b);
+      FOR_EACH_EDGE (p, ei, b->succs)
+	    {
+        basic_block runner = p->dest;
+	      if (runner == EXIT_BLOCK_PTR_FOR_FN (fun))
+          continue;
 
-  FOR_ALL_BB_FN (bb, cfun)
-    bitmap_clear (&frontiers[bb->index]);
-  
-  free (frontiers);
+        while (runner != domsb)
+        {
+          if (!bitmap_set_bit (&frontiers[runner->index], b->index))
+		        break;
+          runner = get_immediate_dominator (CDI_POST_DOMINATORS, runner);
+        }
+	    }
+    }
+    timevar_pop (TV_DOM_FRONTIERS);
+
+    printf("\tBB %02d: ", b->index);
+    bitmap_print(stdout, &frontiers[b->index], "", "\n");
+  }
 }
 
 /*
@@ -214,8 +169,11 @@ class my_pass : public gimple_opt_pass
 
 			//td_isol_print(/*TD*/5);
 			//td5_bitmap_and_pdf_it(fun);
-            td5_q1_frontier(fun);
-            //td5_q2_dfs_cfg2(fun);
+      bitmap_head *frontiers = bitmap_init();
+      calculate_dominance_info(CDI_POST_DOMINATORS);
+      const size_t basic_block_count = (size_t)last_basic_block_for_fn(fun);
+      td5_q1_frontier(fun,frontiers);
+      //td5_q2_dfs_cfg2(fun);
 
 			/******************************/
 			/********** FIN TD5 ***********/
@@ -223,8 +181,7 @@ class my_pass : public gimple_opt_pass
 
 			//clean_aux_field(fun, 0);
 
-			//free_dominance_info(CDI_POST_DOMINATORS);
-			//free_dominance_info(CDI_DOMINATORS);
+			free_dominance_info(CDI_POST_DOMINATORS);
 
 			return 0;
 		}
