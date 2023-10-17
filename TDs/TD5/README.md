@@ -177,24 +177,36 @@ void compute_dominance_frontiers (bitmap_head *frontiers)
   - `ENTRY_BLOCK_PTR_FOR_FN` en `EXIT_BLOCK_PTR_FOR_FN`
 
 ```bash
+┌─[night@night-20b7s2ex01]─[~/S5/CA_2023/TDs/TD5/CODE]
+└──╼ 9 fichiers, 180Kb)─$ make
+~/gcc12/bin/g++ -I`~/gcc12/bin/gcc -print-file-name=plugin`/include -g -Wall -fno-rtti -shared -fPIC  -o libplugin_TP5_1.so plugin_TP5_1.cpp
 OMPI_MPICC=~/gcc12/bin/gcc mpicc test3.c -g -O3 -o TP5_1 -fplugin=./libplugin_TP5_1.so 
 plugin_init: Entering...
 plugin_init: Check ok...
 plugin_init: Pass added...
 plugin: gate... 
-         ... in function main
 plugin: execute...
+Function: 'main'
+        MPI COLLECTIVE: 'MPI_Init' (code: 0)
+        MPI COLLECTIVE: 'MPI_Barrier' (code: 4)
+        Split the block 04
+        MPI COLLECTIVE: 'MPI_Barrier' (code: 4)
+        MPI COLLECTIVE: 'MPI_Barrier' (code: 4)
+        MPI COLLECTIVE: 'MPI_Barrier' (code: 4)
+        MPI COLLECTIVE: 'MPI_Finalize' (code: 1)
         BB 02: 
-        BB 03: 
+        BB 03: 10
         BB 04: 3
-        BB 05: 4
-        BB 06: 4
+        BB 13: 
+        BB 05: 13
+        BB 06: 13
         BB 07: 6
         BB 08: 3
-        BB 09: 4, 6
-        BB 10: 4, 6
+        BB 09: 6, 13
+        BB 10: 6, 13
         BB 11: 10
-        BB 12: 
+        BB 12: 13
+[GRAPHVIZ] Generating CFG of function main in file <main_test3.c_8_main_q7.dot>
 ```
 
 ## Q2
