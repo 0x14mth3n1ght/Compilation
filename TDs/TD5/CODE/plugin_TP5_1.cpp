@@ -7,23 +7,8 @@
 #include <context.h>
 #include <function.h>
 #include <gimple-iterator.h>
-
-/* Global variable required for plugin to execute */
-int plugin_is_GPL_compatible;
-
-/* Global object (const) to represent my pass */
-const pass_data my_pass_data =
-{
-	GIMPLE_PASS, /* type */
-	"NEW_PASS", /* name */
-	OPTGROUP_NONE, /* optinfo_flags */
-	TV_OPTIMIZE, /* tv_id */
-	0, /* properties_required */
-	0, /* properties_provided */
-	0, /* properties_destroyed */
-	0, /* todo_flags_start */
-	0, /* todo_flags_finish */
-};                                                                                                                                     
+#include <dominance.h>
+#include <bitmap.h>                                                                                                                                
 
 //TD3
 /* Enum to represent the collective operations */
@@ -48,53 +33,97 @@ const char *print_func_name(function * fun)
 	return fname;
 }
 
-//TD4
-//retourne une liste dom [dom0,dom1,...,dom13]
-std::vector<std::vector<int>> list_get_dominators(function * fun)
-{
-    std::vector<std::vector<int>> dominators_list;
-
-    basic_block bb;
-    calculate_dominance_info(CDI_DOMINATORS);
-    FOR_ALL_BB_FN(bb, fun)
-    {
-        auto_vec<basic_block> dominators;
-        dominators = get_all_dominated_blocks(CDI_DOMINATORS, bb);
-        std::vector<int> dominators_indices;
-
-        for (int i = 0; i < dominators.length(); i++)
-        {
-            if (dominators[i]->index != bb->index)
-            {
-                dominators_indices.push_back(dominators[i]->index);
-            }
-        }
-        dominators_list.push_back(dominators_indices);
-    }
-    return dominators_list;
-}
-
-
 
 /***************** TD5 *******************/
 /*****************************************/
 
-void td5_q1_frontier(function *fun){
-    edge_iterator eit;
-    edge e;
-    struct basic_bloc_elem *cur_elem;
-    std::vector<std::vector<int>> dominators = list_get_dominators(fun);
-    
-    bool changed = 1;
-    while (changed){
-        changed = 0;
-
-        FOR_EACH_EDGE(e, eit, cur_elem->bb->succs){
-
-        }
+// An array of bitmap of known and fixed size.
+class bitmap_array {
+public:
+    // Initialize a new array with the given length.
+    //
+    // Length must be non-zero.
+    bitmap_array(const size_t ll)
+        : ptr(XNEWVEC(bitmap, ll))
+        , len(ll)
+    {
+        for (size_t i = 0; i < this->len; i += 1)
+            this->ptr[i] = bitmap_alloc(NULL);
     }
+
+    ~bitmap_array()
+    {
+        for (size_t i = 0; i < this->len; i += 1)
+            bitmap_release(this->ptr[i]);
+        free(this->ptr);
+    }
+
+    // Accesses the element at index `idx`. If the index is out of bound,
+    // the program will panic and exit with code 1.
+    bitmap_head& operator[](const size_t idx) const
+    {
+        if (idx >= this->length()) {
+            fprintf(stderr,
+                "ERROR: bitmap_array: idx(%ld) >= this->length(%ld)\n",
+                idx,
+                this->length());
+            exit(1);
+        }
+
+        return *this->ptr[idx];
+    }
+
+    // Number of bitmap_head in the array.
+    size_t length() const { return this->len; }
+
+private:
+    // Pointer to the array head.
+    bitmap* ptr;
+    // Size of the array.
+    size_t len;
+};
+
+void td5_q1_frontier(function *fun){
+  unsigned int bb_index, df_bb_index;
+  bitmap_iterator bi1, bi2;
+  basic_block bb;
+  bitmap_head *frontiers;
+
+  bitmap_initialize (&seen_in_insn, &bitmap_default_obstack);
+
+  EXECUTE_IF_SET_IN_BITMAP (all_blocks, 0, bb_index, bi1)
+    {
+      df_md_bb_local_compute (bb_index);
+    }
+
+  bitmap_release (&seen_in_insn);
+
+  frontiers = XNEWVEC (bitmap_head, last_basic_block_for_fn (cfun));
+  FOR_ALL_BB_FN (bb, cfun)
+    bitmap_initialize (&frontiers[bb->index], &bitmap_default_obstack);
+
+  compute_dominance_frontiers (frontiers);
+
+  /* Add each basic block's kills to the nodes in the frontier of the BB.  */
+  EXECUTE_IF_SET_IN_BITMAP (all_blocks, 0, bb_index, bi1)
+    {
+      bitmap kill = &df_md_get_bb_info (bb_index)->kill;
+      EXECUTE_IF_SET_IN_BITMAP (&frontiers[bb_index], 0, df_bb_index, bi2)
+	{
+	  basic_block bb = BASIC_BLOCK_FOR_FN (cfun, df_bb_index);
+	  if (bitmap_bit_p (all_blocks, df_bb_index))
+	    bitmap_ior_and_into (&df_md_get_bb_info (df_bb_index)->init, kill,
+				 df_get_live_in (bb));
+	}
+    }
+
+  FOR_ALL_BB_FN (bb, cfun)
+    bitmap_clear (&frontiers[bb->index]);
+  
+  free (frontiers);
 }
 
+/*
 void td5_q2_dfs_cfg2(function *fun)
 {                                         
     vec <struct basic_bloc_elem *> pile;
@@ -118,7 +147,7 @@ void td5_q2_dfs_cfg2(function *fun)
         edge_index = 0;
         FOR_EACH_EDGE(e, eit, cur_elem->bb->succs)
         {
-            /* Already seen */
+            // Already seen 
             if (bitmap_bit_p(&cur->already_seen, e->dest->index));
                     continue;
 
@@ -129,9 +158,25 @@ void td5_q2_dfs_cfg2(function *fun)
         }
     }
 }
-
+*/
 /***********************PLUGIN**********************/
 /***************************************************/
+
+int plugin_is_GPL_compatible;
+
+const pass_data my_pass_data =
+{
+	GIMPLE_PASS, /* type */
+	"NEW_PASS", /* name */
+	OPTGROUP_NONE, /* optinfo_flags */
+	TV_OPTIMIZE, /* tv_id */
+	0, /* properties_required */
+	0, /* properties_provided */
+	0, /* properties_destroyed */
+	0, /* todo_flags_start */
+	0, /* todo_flags_finish */
+};     
+
 /* My new pass inheriting from regular gimple pass */
 class my_pass : public gimple_opt_pass
 {
