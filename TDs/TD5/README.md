@@ -1,6 +1,8 @@
 ## Rappel - jusqu'au TD4
 
-`plugin_TP5_0.cpp`
+`plugin_TP5_0.cpp` -> correction `split_on_mpi_collectives` dans plugin q1.
+
+Le *split* permet de modifier le CFG pour séparer les blocs contenant plusieurs appels MPI : en ajoutant le bloc 13 (cf **TD3 q8**)
 
 ![0](CODE/main_test3.c_8_main_q7.png)
 

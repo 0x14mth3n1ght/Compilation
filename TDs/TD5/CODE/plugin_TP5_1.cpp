@@ -68,6 +68,22 @@ bool split_bb_if_necessary(basic_block bb)
     return false;
 }
 
+void split_on_mpi_collectives(basic_block bb, function *fun)
+{
+	FOR_EACH_BB_FN(bb, fun)
+	{   
+		bb->aux = (void*)LAST_AND_UNUSED_MPI_COLLECTIVE_CODE;
+		if (split_bb_if_necessary(bb))
+        	printf("\tSplit the block %02d\n", bb->index);
+
+		for (gimple_stmt_iterator gsi = gsi_start_bb(bb); !gsi_end_p(gsi); gsi_next(&gsi)) {
+			const enum mpi_collective_code code = print_if_mpi_coll(gsi_stmt(gsi));
+			if (code != LAST_AND_UNUSED_MPI_COLLECTIVE_CODE)
+				bb->aux = (void*)code;
+		}
+	} 
+}
+
 /* Build a filename (as a string) based on function name */
 static char* cfgviz_generate_filename(function* fun, const char* suffix)
 {
@@ -269,20 +285,9 @@ class my_pass : public gimple_opt_pass
 			printf("plugin: execute...\n");
 			printf("Function: '%s'\n", function_name(fun));
 
-			basic_block bb;
+			basic_block bb = NULL;
+            split_on_mpi_collectives(bb,fun);
 			calculate_dominance_info(CDI_POST_DOMINATORS);
-			FOR_EACH_BB_FN(bb, fun)
-			{   
-				bb->aux = (void*)LAST_AND_UNUSED_MPI_COLLECTIVE_CODE;
-				if (split_bb_if_necessary(bb))
-        			printf("\tSplit the block %02d\n", bb->index);
-
-				for (gimple_stmt_iterator gsi = gsi_start_bb(bb); !gsi_end_p(gsi); gsi_next(&gsi)) {
-					const enum mpi_collective_code code = print_if_mpi_coll(gsi_stmt(gsi));
-					if (code != LAST_AND_UNUSED_MPI_COLLECTIVE_CODE)
-						bb->aux = (void*)code;
-				}
-			}
 			bitmap_head *frontiers = bitmap_init();
 			calculate_dominance_info(CDI_POST_DOMINATORS);
 			td5_q1_frontier(fun,frontiers);
