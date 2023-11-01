@@ -208,3 +208,36 @@ Function: 'main'
 ```
 
 ## Q2
+
+On obtient `CFG'` (ici sans 9->10) en stockant dans une pile les prédecesseurs sans boucle
+
+```bash
+[GRAPHVIZ] Generating CFG of function main in file <main_test3.c_8_q1.dot>
+~/gcc12/bin/g++ -I`~/gcc12/bin/gcc -print-file-name=plugin`/include -g -Wall -fno-rtti -shared -fPIC  -o libplugin_TP5_2.so plugin_TP5_2.cpp
+OMPI_MPICC=~/gcc12/bin/gcc mpicc test3.c -g -O3 -o TP5_2 -fplugin=./libplugin_TP5_2.so 
+plugin_init: Entering...
+plugin_init: Check ok...
+plugin_init: Pass added...
+plugin: gate... 
+plugin: execute...
+Function: 'main'
+        MPI COLLECTIVE: 'MPI_Init' (code: 0)
+        MPI COLLECTIVE: 'MPI_Barrier' (code: 4)
+        Split the block 04
+        MPI COLLECTIVE: 'MPI_Barrier' (code: 4)
+        MPI COLLECTIVE: 'MPI_Barrier' (code: 4)
+        MPI COLLECTIVE: 'MPI_Barrier' (code: 4)
+        MPI COLLECTIVE: 'MPI_Finalize' (code: 1)
+        BB 02: 2
+        BB 03: 2, 3, 10
+        BB 04: 2, 3, 4, 10
+        BB 13: 2, 3, 4, 10, 13
+        BB 05: 2, 3, 4, 5, 10, 13
+        BB 06: 2, 3, 4, 6, 10, 13
+        BB 07: 2, 3, 4, 6, 7, 10, 13
+        BB 08: 2, 3, 8, 10
+        BB 09: 2, 3, 4, 5, 6, 9, 10, 13
+        BB 10: 2, 10
+        BB 11: 2, 10, 11
+        BB 12: 2, 3, 4, 6, 7, 8, 10, 11, 12, 13
+```

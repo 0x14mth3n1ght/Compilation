@@ -8,7 +8,8 @@
 #include <function.h>
 #include <gimple-iterator.h>
 #include <dominance.h>
-#include <bitmap.h>                                                                                                                         
+#include <bitmap.h>                                   
+#include <stack>                                                                                    
 
 // Enum to represent the collective operations
 #define DEFMPICOLLECTIVES(CODE, NAME) CODE,
@@ -165,83 +166,62 @@ void clear_all_bb_aux(function* fun)
 
 bitmap_head* bitmap_init(){
   basic_block bb;
-  bitmap_head *frontiers = XNEWVEC (bitmap_head, last_basic_block_for_fn (cfun));
+  bitmap_head *bitmap_to_initialize = XNEWVEC (bitmap_head, last_basic_block_for_fn (cfun));
   FOR_ALL_BB_FN (bb, cfun)
-    bitmap_initialize (&frontiers[bb->index], &bitmap_default_obstack);
-  return frontiers;
+    bitmap_initialize (&bitmap_to_initialize[bb->index], &bitmap_default_obstack);
+  return bitmap_to_initialize;
 }
 
-void td5_q1_frontier(function *fun, bitmap_head *frontiers){
-
-	edge p;
-	edge_iterator ei;
-	basic_block b;
-
-	FOR_EACH_BB_FN (b, fun)
-	{
-    	if (EDGE_COUNT (b->succs) >= 2)
-    	{
-			basic_block domsb = get_immediate_dominator (CDI_POST_DOMINATORS, b);
-			FOR_EACH_EDGE (p, ei, b->succs)
-	    	{
-        		basic_block runner = p->dest;
-				if (runner == EXIT_BLOCK_PTR_FOR_FN (fun))
-					continue;
-
-        		while (runner != domsb)
-        		{
-          			if (!bitmap_set_bit (&frontiers[runner->index], b->index))
-						break;
-         			runner = get_immediate_dominator (CDI_POST_DOMINATORS, runner);
-				}
-	    	}
-    	}
-  	}
-
-	b = NULL;
-    FOR_EACH_BB_FN(b, fun)
-    {
-        bitmap_clear_bit(&frontiers[b->index], b->index);
-    	printf("\tBB %02d: ", b->index);
-    	bitmap_print(stdout, &frontiers[b->index], "", "\n");
-  	}
-}
-/*
-void td5_q2_dfs_cfg2(function *fun)
+void td5_q2_dfs_removeloop_cfg2(function *fun, bitmap_head *all_preds)
 {                                         
-    vec <struct basic_bloc_elem *> pile;
-    struct basic_bloc_elem *first;
+    std::stack<basic_block> stack;
+    stack.push(ENTRY_BLOCK_PTR_FOR_FN(fun)->next_bb);
 
-    first = new_bb_elem();
-    first->bb = ENTRY_BLOCK_PTR_FOR_FN(fun);
+    while (!stack.empty()) {
+        basic_block current_bb = stack.top();
+        stack.pop();
+        
+        bitmap_set_bit(&all_preds[current_bb->index], current_bb->index);
 
-    pile.push(first);
-
-    while (pile.length() != 0) 
-    {
-        edge_iterator eit;
         edge e;
-        int edge_index;
-        struct basic_bloc_elem *cur_elem;
-        cur_elem = pile.pop();
-
-        bitmap_set_bit(&cur_elem->already_seen, cur_elem->bb->index);
-
-        edge_index = 0;
-        FOR_EACH_EDGE(e, eit, cur_elem->bb->succs)
+        edge_iterator ei;
+        FOR_EACH_EDGE(e, ei, current_bb->succs) 
         {
-            // Already seen 
-            if (bitmap_bit_p(&cur->already_seen, e->dest->index));
-                    continue;
+            basic_block dest_bb = e->dest;
+            if (dest_bb == EXIT_BLOCK_PTR_FOR_FN(fun)) {
+                continue;
+            }
 
-            bitmap_set_bit(&cur_elem->bb->aux->edges, edge_index);
+            edge e2;
+            edge_iterator ei2;
+            bool is_already_pred = false;
+            FOR_EACH_EDGE(e2, ei2, current_bb->preds)
+            {
+                basic_block src_bb = e->src;
+                if (bitmap_bit_p(&all_preds[src_bb->index], dest_bb->index)) {
+                    is_already_pred = true;
+                    break;
+                }
+            }
 
-            edge_index++;
-            next elem = new_bb_elem();
+            // If the destination is already a predecessor, ignore it.
+            if (is_already_pred) {
+                continue;
+            }
+            // Else join the bitmaps and add the block to the stack to be explored later.
+            bitmap_ior_into(&all_preds[dest_bb->index], &all_preds[current_bb->index]);
+            stack.push(dest_bb);
         }
     }
+    basic_block bb = NULL;
+    FOR_EACH_BB_FN(bb, fun)
+    {
+        printf("\tBB %02d: ", bb->index);
+        bitmap_print(stdout, &all_preds[bb->index], "", "\n");
+    }
+    printf("Done\n");
 }
-*/
+
 /***********************PLUGIN**********************/
 /***************************************************/
 
@@ -288,16 +268,15 @@ class my_pass : public gimple_opt_pass
 			basic_block bb = NULL;
             split_on_mpi_collectives(bb,fun);
 			calculate_dominance_info(CDI_POST_DOMINATORS);
-			bitmap_head *frontiers = bitmap_init();
-			td5_q1_frontier(fun,frontiers);
-    		//td5_q2_dfs_cfg2(fun);
+
+            bitmap_head *all_preds = bitmap_init();
+    		td5_q2_dfs_removeloop_cfg2(fun,all_preds);
 
 			/******************************/
 			/********** FIN TD5 ***********/
 			/******************************/
 
 			free_dominance_info(CDI_POST_DOMINATORS);
-			cfgviz_dump(fun, "q1");
 			clear_all_bb_aux(fun);
 			
 			return 0;
