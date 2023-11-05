@@ -6,14 +6,15 @@ CXXFLAGS=-I`$(CC) -print-file-name=plugin`/include -g -Wall -fno-rtti -shared -f
 LDFLAGS=-g -O3
 LIBDIR=lib
 BINDIR=bin
+DOT_FILES= $(wildcard *.dot)
 
 .PHONY: all
-all: $(LIBDIR)/libplugin.so $(BINDIR)/TP5_2
+all: $(LIBDIR)/libplugin.so $(BINDIR)/Projet
 
 $(LIBDIR)/libplugin.so: src/plugin.cpp | $(LIBDIR)
 	$(CXX) $(CXXFLAGS) -o $@ $<
 
-$(BINDIR)/TP5_2: test/test3.c $(LIBDIR)/libplugin.so | $(BINDIR)
+$(BINDIR)/Projet: test/test3.c $(LIBDIR)/libplugin.so | $(BINDIR)
 	OMPI_MPICC=$(CC) $(MPICC) $< $(LDFLAGS) -o $@ -fplugin=$(LIBDIR)/libplugin.so
 
 $(LIBDIR):
@@ -21,6 +22,11 @@ $(LIBDIR):
 
 $(BINDIR):
 	mkdir -p $@
+
+%.png: %.dot
+	dot -Tpng $< > $@
+
+png: $(patsubst %.dot,%.png,$(DOT_FILES))
 
 .PHONY: clean
 clean:
