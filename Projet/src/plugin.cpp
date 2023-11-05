@@ -2,6 +2,7 @@
 #include "mpi_collectives.cpp"
 #include "cfgviz.cpp"
 #include "frontiers.cpp"
+#include "pragma.cpp"
 
 int plugin_is_GPL_compatible;
 
@@ -43,6 +44,7 @@ class my_pass : public gimple_opt_pass
 			printf("plugin: execute...\n");
 			printf("Function: '%s'\n", function_name(fun));
 
+			/*****PDF+ Warnings ******/
 			basic_block bb = NULL;
 			split_on_mpi_collectives(bb,fun);
 			calculate_dominance_info(CDI_POST_DOMINATORS);
@@ -50,7 +52,7 @@ class my_pass : public gimple_opt_pass
 			printf("PDF Basic Blocks\n");			
 			bitmap_head *frontiers = bitmap_init();
 			post_dom_frontiers(fun,frontiers);
-			cfgviz_dump(fun,"postdomfront");
+			//cfgviz_dump(fun,"postdomfront");
 
 			printf("CFG2 - Loop Removed\n");
 			bitmap_head *all_preds = bitmap_init();
@@ -63,9 +65,9 @@ class my_pass : public gimple_opt_pass
 
 			free_dominance_info(CDI_POST_DOMINATORS);
 			clear_all_bb_aux(fun);
-			
-			return 0;
-		}
+
+		return 0;
+	}
 }; 
 
 /* Main entry point for plugin */
@@ -94,6 +96,14 @@ int plugin_init(struct plugin_name_args * plugin_info, struct plugin_gcc_version
 			&my_pass_info);
 
 	printf( "plugin_init: Pass added...\n" ) ;
+
+	/* Add my PRAGME pass to the pass manager */
+	register_callback(plugin_info->base_name, 
+			PLUGIN_PRAGMAS, 
+			my_callback_mpicoll_register, 
+			NULL);
+
+	printf( "plugin_pragma: Pass added...\n" );
 
 	return 0;
 }

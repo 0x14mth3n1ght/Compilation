@@ -1,23 +1,27 @@
 #include <string.h>
 #include <stdio.h>
-#include "../include/plugin.h"
-#include "../headers/cfgviz.h"
-#include "../headers/mpi_collectives.h"
+#include "../headers/plugin.h"
 
 // Liste pour stocker les fonctions spécifiées dans les directives
-vec<const char *> specified_functions {};
+vec<const unsigned char*> pragma_instrumented_functions {};
 
-void pragma_mpicoll_check(cpp_reader* ARG_UNUSED(dummy)) {
+void pragma_mpicoll_check(cpp_reader* ARG_UNUSED(dummy))
+{
     if (cfun) {
-        // Avertissement : La directive ne peut être utilisée qu'en dehors des fonctions
-        warning_at(input_location, 0, "Directive mpicoll_check ne peut être utilisée à l'intérieur d'une fonction");
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat"
+        error("%<#pragma instrumente%> option is not allowed inside functions");
+#pragma GCC diagnostic pop
         return;
     }
 
+    bool correctly_formatted = true;
     bool need_closing_parenthese = false;
     tree x;
     enum cpp_ttype token;
+    vec<const unsigned char*> pending_functions {};
 
+    // Checking for the opening parenthese, if any.
     token = pragma_lex(&x);
     if (CPP_OPEN_PAREN == token) {
         need_closing_parenthese = true;
@@ -25,63 +29,50 @@ void pragma_mpicoll_check(cpp_reader* ARG_UNUSED(dummy)) {
     }
 
     while (CPP_NAME == token) {
-        const char* function_name = x->identifier.id.str;
+        const unsigned char* name = x->identifier.id.str;
+        pending_functions.safe_push(name);
 
-        // Vérifier l'existence de la fonction dans le code source
-        if (!function_exists_in_code(function_name)) {
-            // Avertissement : La fonction spécifiée dans la directive n'existe pas dans le code source
-            warning_at(input_location, 0, "La fonction '%s' spécifiée dans mpicoll_check n'existe pas dans le code source", function_name);
-        }
-
-        // Vérifier si la fonction a déjà été spécifiée précédemment
-        if (specified_functions.contains(function_name)) {
-            // Avertissement : La fonction est spécifiée plusieurs fois dans les directives
-            warning_at(input_location, 0, "La fonction '%s' est spécifiée plusieurs fois dans les directives mpicoll_check", function_name);
-        } else {
-            specified_functions.safe_push(function_name);
-        }
-
-        // Passer à la prochaine fonction spécifiée
         do {
             token = pragma_lex(&x);
         } while (CPP_COMMA == token);
     }
 
     if (need_closing_parenthese && CPP_CLOSE_PAREN != token) {
-        // Avertissement : Format incorrect pour la directive
-        warning_at(input_location, 0, "Directive mpicoll_check mal formatée (parenthèse fermante manquante)");
-        return;
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat"
+        error("%<#pragma instrumente (name1[, name2]...)%> is missing a closing %<)%>");
+#pragma GCC diagnostic pop
+        correctly_formatted = false;
     }
 
+    token = pragma_lex(&x);
     if (CPP_EOF != token) {
-        // Avertissement : Format incorrect pour la directive
-        warning_at(input_location, 0, "Directive mpicoll_check mal formatée");
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat"
+        error("%<#pragma instrumente ...%> is badly formed");
+#pragma GCC diagnostic pop
+        correctly_formatted = false;
+    }
+
+    if (correctly_formatted) {
+        pragma_instrumented_functions.reserve_exact(pragma_instrumented_functions.length() + pending_functions.length());
+        while (!pending_functions.is_empty()) {
+            const unsigned char* name = pending_functions.pop();
+            if (pragma_instrumented_functions.contains(name)) {
+                fprintf(stderr, "%s: warning: '%s' is duplicated in '#pragma instrumente ...'\n", progname, name);
+            } else {
+                pragma_instrumented_functions.safe_push(name);
+            }
+        }
     }
 }
 
-void my_callback_mpicoll_register(void*, void*)
+void my_callback_mpicoll_register(void *event_data, void *data)
 {
+    (void) event_data;
+    (void) data;
     c_register_pragma("ProjetCA", "mpicoll_check", pragma_mpicoll_check);
 }
 
-int plugin_is_GPL_compatible = 1;
 
-int plugin_init(struct plugin_name_args* plugin_info, struct plugin_gcc_version* version) {
-    if (!plugin_default_version_check(version, &gcc_version)) {
-        return 1;
-    }
 
-    // Enregistrement de la fonction de traitement de la directive mpicoll_check
-    my_callback_register = c_register_pragma("ProjetCA", "mpicoll_check", pragma_mpicoll_check);
-    
-    // Vérification des autres enregistrements de callback
-    if (!my_callback_register) {
-        // Gérer l'échec de l'enregistrement de la fonction de traitement de la directive
-        fprintf(stderr, "Échec de l'enregistrement de la fonction de traitement de la directive mpicoll_check.\n");
-        return 1;
-    }
-    
-    // Autres enregistrements de callbacks, le cas échéant...
-
-    return 0;
-}

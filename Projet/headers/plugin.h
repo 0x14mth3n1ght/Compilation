@@ -39,6 +39,7 @@
 #include "mpi_collectives.h"
 #include "frontiers.h"
 #include "cfgviz.h"
+#include "pragma.h"
 
 #endif
 
