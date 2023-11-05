@@ -1,12 +1,11 @@
 #ifndef PLUGIN
 #define PLUGIN
 
-// Headers used throughout the project from GCC plugin interface.
-#pragma once
-
-// Most import needed to write a plugin.
 #include <gcc-plugin.h>
 #include <plugin-version.h>
+
+// Headers used throughout the project from GCC plugin interface.
+#pragma once
 
 // Basic blocks are one of the fundamental compilation type.
 #include <basic-block.h>
@@ -39,5 +38,7 @@
 // Project
 #include "mpi_collectives.h"
 #include "frontiers.h"
+#include "cfgviz.h"
 
-#endif PLUGIN
+#endif
+

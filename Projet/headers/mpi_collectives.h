@@ -1,3 +1,7 @@
+#include <cstring>
+#include <cstdio>
+#include "plugin.h"
+
 #ifndef MPI_COLLECTIVES
 #define MPI_COLLECTIVES
 
@@ -36,41 +40,11 @@ enum mpi_collective_code print_if_mpi_coll(const gimple* stmt)
     return LAST_AND_UNUSED_MPI_COLLECTIVE_CODE;
 }
 
-enum domination_status
-{
-        NOT_DOMINATED,
-        DOMINATED,
-        NOT_APPLICABLE
-};
-
-struct bb_data
-{
-        mpi_collective_code mpi_code;
-        bitmap_head dom;
-        bitmap_head post_dom;
-        bitmap_head dom_front;
-        bitmap_head post_dom_front;
-        int collective_rank[LAST_AND_UNUSED_MPI_COLLECTIVE_CODE];
-        bitmap_head seens;
-        int mark1; // for graph parkour
-        int mark2;
-        domination_status dom_status;
-};
-
-struct edge_data
-{
-        // exclude adge that make loop
-        // excluding edge tag with loop remove all loop from the graph
-        // used to calculate collectives ranks
-        bool loop;
-};
-
-
 // Split the basic blocks of the function if they contains at least two
 // MPI collectives.
 
-bool split_bb_if_necessary(basic_block bb)
+bool split_bb_if_necessary(basic_block bb);
 
 void split_on_mpi_collectives(basic_block bb, function* fun);
 
-#endif MPI_COLLECTIVES
+#endif

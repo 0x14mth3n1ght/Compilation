@@ -1,29 +1,28 @@
-EXE=bin/plugin
-SRC_DIR=src
-OBJ_DIR=obj
 CXX=~/gcc12/bin/g++
 CC=~/gcc12/bin/gcc
 MPICC=mpicc
-PLUGIN_FLAGS=-I`$(CC) -print-file-name=plugin`/include -g -Wall -fno-rtti -shared -fPIC
-CFLAGS=-g -O3
-DOT_FILES := $(wildcard *.dot)
 
-$(OBJ_DIR)/plugin.o: $(SRC_DIR)/plugin.cpp | $(OBJ_DIR)
-	$(CXX) -c $(PLUGIN_FLAGS) $(GMP_CFLAGS) -o $@ $<
+CXXFLAGS=-I`$(CC) -print-file-name=plugin`/include -g -Wall -fno-rtti -shared -fPIC
+LDFLAGS=-g -O3
+LIBDIR=lib
+BINDIR=bin
 
-$(EXE): $(OBJ_DIR)/plugin.o libplugin.so
-	OMPI_MPICC=$(CC) $(MPICC) test/test3.c $(CFLAGS) -o $@ -fplugin=./libplugin.so
+.PHONY: all
+all: $(LIBDIR)/libplugin.so $(BINDIR)/TP5_2
 
-%.png: %.dot
-	dot -Tpng $< > $@
+$(LIBDIR)/libplugin.so: src/plugin.cpp | $(LIBDIR)
+	$(CXX) $(CXXFLAGS) -o $@ $<
 
-png: $(patsubst %.dot,%.png,$(DOT_FILES))
+$(BINDIR)/TP5_2: test/test3.c $(LIBDIR)/libplugin.so | $(BINDIR)
+	OMPI_MPICC=$(CC) $(MPICC) $< $(LDFLAGS) -o $@ -fplugin=$(LIBDIR)/libplugin.so
 
-$(OBJ_DIR):
+$(LIBDIR):
 	mkdir -p $@
 
-clean:
-	rm -rf $(OBJ_DIR) $(EXE)
+$(BINDIR):
+	mkdir -p $@
 
-clean_all: clean
-	rm -rf libplugin*.so *.dot
+.PHONY: clean
+clean:
+	rm -rf $(LIBDIR)
+	rm -rf $(BINDIR)

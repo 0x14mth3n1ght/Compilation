@@ -9,6 +9,8 @@
 #include "plugin.h"
 
 // Dumps a function as a graph, appending `suffix` to the filename.
-void cfgviz_dump(function* fun, const char* const suffix);
+void cfgviz_dump(function* fun, const char* suffix);
 
-#endif CFGVIZ
+void clear_all_bb_aux(function* fun);
+
+#endif

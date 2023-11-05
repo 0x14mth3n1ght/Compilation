@@ -1,6 +1,8 @@
 #ifndef FRONTIERS
 #define FRONTIERS
 
-void post_dom_frontier(function *fun, bitmap_head *frontiers)
+bitmap_head* bitmap_init();
 
-#endif FRONTIERS
+void post_dom_frontiers(function *fun, bitmap_head *frontiers);
+
+#endif

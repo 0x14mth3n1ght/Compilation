@@ -18,4 +18,4 @@ void ca_pragma_check_visited_all_function(void*, void*);
 // used in the other functions `ca_pragma_*`.
 void ca_pragma_find_functions_to_visit(void*, void*);
 
-#endif CA_PRAGMA
+#endif

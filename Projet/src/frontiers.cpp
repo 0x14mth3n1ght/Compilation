@@ -8,7 +8,7 @@ bitmap_head* bitmap_init(){
   return frontiers;
 }
 
-void post_dom_frontier(function *fun, bitmap_head *frontiers){
+void post_dom_frontiers(function *fun, bitmap_head *frontiers){
 	edge p;
 	edge_iterator ei;
 	basic_block b;
