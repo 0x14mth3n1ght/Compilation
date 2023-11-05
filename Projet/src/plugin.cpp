@@ -1,4 +1,7 @@
 #include "../headers/plugin.h"
+#include "mpi_collectives.cpp"
+#include "cfgviz.cpp"
+#include "frontiers.cpp"
 
 int plugin_is_GPL_compatible;
 
@@ -43,15 +46,22 @@ class my_pass : public gimple_opt_pass
 			basic_block bb = NULL;
 			split_on_mpi_collectives(bb,fun);
 			calculate_dominance_info(CDI_POST_DOMINATORS);
-			
+
+			printf("PDF Basic Blocks\n");			
 			bitmap_head *frontiers = bitmap_init();
 			post_dom_frontiers(fun,frontiers);
+			cfgviz_dump(fun,"postdomfront");
+
+			printf("CFG2 - Loop Removed\n");
+			bitmap_head *all_preds = bitmap_init();
+			removeloop_cfg2(fun,all_preds);
+			//cfgviz_dump(fun,"removeloop");
+
 			//bitmap_head *all_preds = bitmap_init();
 			//bb = ENTRY_BLOCK_PTR_FOR_FN(fun)->next_bb;
 			//mark_edge(bb);
 
 			free_dominance_info(CDI_POST_DOMINATORS);
-			cfgviz_dump(fun,"post_dom_frontiers");
 			clear_all_bb_aux(fun);
 			
 			return 0;
