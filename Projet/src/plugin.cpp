@@ -70,6 +70,23 @@ class my_pass : public gimple_opt_pass
 	}
 }; 
 
+void gracefull_exit_handler(__attribute__((unused)) void *gcc_data, __attribute__((unused)) void *user_data) {
+    // Warns if some function was in pragmas but not in actual code
+    int index;
+    if(!mpi_pragmas::seen_in_pragmas.is_empty()){
+        pragma_el* el = &mpi_pragmas::seen_in_pragmas.pop();
+		// rich_location allows multiple lines to appear in a single warning, error, debug, etc ...
+        rich_location richloc(line_table, el->loc);
+        richloc.add_fixit_remove(el->loc);
+        FOR_EACH_VEC_ELT(mpi_pragmas::seen_in_pragmas, index, el) {
+            richloc.add_range(el->loc, SHOW_RANGE_WITH_CARET);
+            richloc.add_fixit_remove(el->loc);
+        }
+        warning_at(&richloc, 0, "Function names found in pragmas but not in actual code");
+    }
+};
+
+
 /* Main entry point for plugin */
 int plugin_init(struct plugin_name_args * plugin_info, struct plugin_gcc_version * version)
 {
@@ -100,11 +117,18 @@ int plugin_init(struct plugin_name_args * plugin_info, struct plugin_gcc_version
 	/* Add my PRAGME pass to the pass manager */
 	register_callback(plugin_info->base_name, 
 			PLUGIN_PRAGMAS, 
-			my_callback_mpicoll_register, 
+			mpi_pragmas::my_callback_mpicoll_register, 
 			NULL);
 
 	printf( "plugin_pragma: Pass added...\n" );
 
+    register_callback(
+            plugin_info->base_name,
+            PLUGIN_FINISH,
+            &gracefull_exit_handler,
+            nullptr);
+
+	printf( "plugin_pragma: Pragmas registered !\n");
 	return 0;
 }
 

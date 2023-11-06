@@ -58,18 +58,24 @@ Projet IPS - 2022 - [:book:](../index.html)
 
 ---
 
-# Graphes
+## Fonctions collectives MPI_ALL_REDUCE
 
-## La on parle de la théorie cf TD4
+(MPI_Init, MPI_Reduce, MPI_Barrier, MPI_Finalize)
 
-## Dominance, Post Dominance
+## Détection à la compilation des checks
 
----
+- Analyse statique du code que l'on compiler
+- Ecriture d'un plugin gcc
 
-# Calcul des la PDF
+## Théorie des graphes
 
-## Formes 
+- Frontière de post dominance (pour chaque rang de chaque type d'appel MPI)
 
+- Frontière de post dominance 
+
+- Frontière de post dominance itérée
+      - Calcul pour chaque appel MPI
+      - Vide =OK, Non vide = NOK
 
 ---
 
@@ -97,26 +103,9 @@ Projet IPS - 2022 - [:book:](../index.html)
 * **plugin.cpp**
 * **pragma.cpp**
 * tests
-  * **test3.c**
+  * **test-mpi-foo.c**
 
 ]
-
-
----
-
-# Utilitaires makefile
-
-```Makefile
-%.png: %.dot
-        dot -Tpng $< > $@
-
-png: $(patsubst %.dot,%.png,$(DOT_FILES))
-
-.PHONY: clean
-clean:
-        rm -rf $(LIBDIR)
-        rm -rf $(BINDIR)
-```
 
 ---
 
@@ -132,14 +121,15 @@ LDFLAGS=-g -O3
 LIBDIR=lib
 BINDIR=bin
 DOT_FILES= $(wildcard *.dot)
+TEST_FILES= $(wildcard test/*.c)
 
 .PHONY: all
-all: $(LIBDIR)/libplugin.so $(BINDIR)/Projet
+all: $(LIBDIR)/libplugin.so $(TEST_FILES:test/%.c=$(BINDIR)/%)
 
 $(LIBDIR)/libplugin.so: src/plugin.cpp | $(LIBDIR)
         $(CXX) $(CXXFLAGS) -o $@ $<
 
-$(BINDIR)/Projet: test/test3.c $(LIBDIR)/libplugin.so | $(BINDIR)
+$(BINDIR)/%: test/%.c $(LIBDIR)/libplugin.so | $(BINDIR)
         OMPI_MPICC=$(CC) $(MPICC) $< $(LDFLAGS) -o $@ -fplugin=$(LIBDIR)/libplugin.so
 
 $(LIBDIR):
@@ -147,6 +137,22 @@ $(LIBDIR):
 
 $(BINDIR):
         mkdir -p $@
+```
+
+---
+
+# Utilitaires makefile
+
+```Makefile
+%.png: %.dot
+        dot -Tpng $< > $@
+
+png: $(patsubst %.dot,%.png,$(DOT_FILES))
+
+.PHONY: clean
+clean:
+        rm -rf $(LIBDIR)
+        rm -rf $(BINDIR)
 ```
 
 ---
@@ -503,6 +509,26 @@ void my_callback_mpicoll_register(void *event_data, void *data)
 }
 ```
 
+ `pragma.h`
+
+ ```c++
+ class mpi_pragmas {
+  public:
+    /**
+      Vector that contains function names declared by our pragma
+    */
+      static vec<pragma_el> seen_in_pragmas;
+    /**
+      Required by the gcc plugin API
+      Handles pragma registration to gcc
+      
+      @param event_data gcc event data given by register_callback api function
+      @param data User defined data
+    */
+      static void my_callback_mpicoll_register(void* event_data, void* data);
+  };
+```
+
 ---
 
 #Résultat
@@ -566,6 +592,18 @@ je suis dans le if (c=8)
 fin du for
 je suis dans le else (c=32)
 ```
+
+---
+
+# Pragmas
+
+.rightf.w10[
+ ![](images/bb_concluant.png)
+]
+
+.rightf.w70[
+ ![](images/concluant.png)
+]
 
 ---
 

@@ -5,16 +5,28 @@
 
 #include "plugin.h"
 
-// Returns `true` when the given function should be checked for its sequence
-// by the plugin.
-void pragma_mpicoll_check(cpp_reader* ARG_UNUSED(dummy));
+typedef struct {
+    const char* name;
+    location_t loc;
+} pragma_el;
 
-// Will raise warnings when the functions registered by `#pragma ProjetCA`
-// instructions have not been all found in the code.
-
-// Will register the `#pragma ProjetCA mpicoll_check` instruction to allow for
-// its detection and register the functions found by this instruction to be
-// used in the other functions `ca_pragma_*`.
-void my_callback_mpicoll_register(void* event_data, void* data);
+/**
+	Handles our '#pragma instrument function' logic and registration 
+*/
+class mpi_pragmas {
+public:
+	/**
+		Vector that contains function names declared by our pragma
+	*/
+    static vec<pragma_el> seen_in_pragmas;
+	/**
+		Required by the gcc plugin API
+		Handles pragma registration to gcc
+		
+		@param event_data gcc event data given by register_callback api function
+		@param data User defined data
+	*/
+    static void my_callback_mpicoll_register(void* event_data, void* data);
+};
 
 #endif

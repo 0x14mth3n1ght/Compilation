@@ -40,6 +40,7 @@
 #include "frontiers.h"
 #include "cfgviz.h"
 #include "pragma.h"
+#include <stack>
 
 #endif
 

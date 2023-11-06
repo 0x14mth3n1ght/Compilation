@@ -2,76 +2,61 @@
 #include <stdio.h>
 #include "../headers/plugin.h"
 
-// Liste pour stocker les fonctions spécifiées dans les directives
-vec<const unsigned char*> pragma_instrumented_functions {};
+vec<pragma_el> mpi_pragmas::seen_in_pragmas = vNULL; //NOLINT
 
-void pragma_mpicoll_check(cpp_reader* ARG_UNUSED(dummy))
-{
+void handle_instrument_function(__attribute__((unused)) cpp_reader *dummy){
+    tree data = nullptr;
+    location_t token_loc;
+	// Get the first token after a '#pragma instrument function ' define line
+	// token_loc keeps track of where is the parsed token
+	// token_loc is kept to create pretty gcc user outputs
+    enum cpp_ttype token = pragma_lex(&data, &token_loc);
+
+	// We don't allow to define our pragma inside a function
     if (cfun) {
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wformat"
-        error("%<#pragma instrumente%> option is not allowed inside functions");
-#pragma GCC diagnostic pop
+        error_at(token_loc, "%s %<#pragma ProjetCA mpicoll_check%> %s", "Can't use", "inside functions !");
         return;
     }
-
-    bool correctly_formatted = true;
-    bool need_closing_parenthese = false;
-    tree x;
-    enum cpp_ttype token;
-    vec<const unsigned char*> pending_functions {};
-
-    // Checking for the opening parenthese, if any.
-    token = pragma_lex(&x);
-    if (CPP_OPEN_PAREN == token) {
-        need_closing_parenthese = true;
-        token = pragma_lex(&x);
+	
+	// Check if we are in a "#pragma instrument function fun_name" form
+    if(token == CPP_NAME){
+        mpi_pragmas::seen_in_pragmas.safe_push({
+            .name = (const char*)data->identifier.id.str,
+            .loc = token_loc
+        });
+        return;
     }
-
-    while (CPP_NAME == token) {
-        const unsigned char* name = x->identifier.id.str;
-        pending_functions.safe_push(name);
-
-        do {
-            token = pragma_lex(&x);
-        } while (CPP_COMMA == token);
+	
+	// The first form has been checked, so we check if first token is an open parenthesis (second form)
+	// The second form is "#pragma instrument function(fun_name,fun_name2)"
+    if(token != CPP_OPEN_PAREN){
+        error_at(token_loc, "Unsupported pragma token");
+        return;
     }
-
-    if (need_closing_parenthese && CPP_CLOSE_PAREN != token) {
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wformat"
-        error("%<#pragma instrumente (name1[, name2]...)%> is missing a closing %<)%>");
-#pragma GCC diagnostic pop
-        correctly_formatted = false;
-    }
-
-    token = pragma_lex(&x);
-    if (CPP_EOF != token) {
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wformat"
-        error("%<#pragma instrumente ...%> is badly formed");
-#pragma GCC diagnostic pop
-        correctly_formatted = false;
-    }
-
-    if (correctly_formatted) {
-        pragma_instrumented_functions.reserve_exact(pragma_instrumented_functions.length() + pending_functions.length());
-        while (!pending_functions.is_empty()) {
-            const unsigned char* name = pending_functions.pop();
-            if (pragma_instrumented_functions.contains(name)) {
-                fprintf(stderr, "%s: warning: '%s' is duplicated in '#pragma instrumente ...'\n", progname, name);
-            } else {
-                pragma_instrumented_functions.safe_push(name);
-            }
+	
+	// We iterate on all tokens on the line until we reach a close parenthesis or the end of the line
+    while((token = pragma_lex(&data, &token_loc)) != CPP_CLOSE_PAREN && token != CPP_EOF){
+		// If we hit a name, we store it in the seen_in_pragmas
+		// If we hit a comma, we ignore it and continue
+		// Else we can output that the current token is not supported
+        switch(token){
+            case CPP_COMMA:
+                continue;
+            case CPP_NAME:
+                mpi_pragmas::seen_in_pragmas.safe_push({
+                    .name = (const char*)data->identifier.id.str,
+                    .loc = token_loc
+                });
+                break;
+            default:
+                error_at(token_loc, "Unsupported pragma token");
+                return;
         }
     }
 }
 
-void my_callback_mpicoll_register(void *event_data, void *data)
-{
-    (void) event_data;
-    (void) data;
-    c_register_pragma("ProjetCA", "mpicoll_check", pragma_mpicoll_check);
+void mpi_pragmas::my_callback_mpicoll_register(__attribute__((unused)) void *event_data,__attribute__((unused)) void *data) {
+    c_register_pragma("ProjetCA", "mpicoll_check", &handle_instrument_function);
 }
 
 

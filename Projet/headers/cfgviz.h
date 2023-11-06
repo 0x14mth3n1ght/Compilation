@@ -7,6 +7,7 @@
 #pragma once
 
 #include "mpi_collectives.h"
+#include "plugin.h"
 
 static char* cfgviz_generate_filename(function* fun, const char* suffix);
 static void cfgviz_internal_dump(function* fun, FILE* out);

@@ -7,14 +7,15 @@ LDFLAGS=-g -O3
 LIBDIR=lib
 BINDIR=bin
 DOT_FILES= $(wildcard *.dot)
+TEST_FILES= $(wildcard test/*.c)
 
 .PHONY: all
-all: $(LIBDIR)/libplugin.so $(BINDIR)/Projet
+all: $(LIBDIR)/libplugin.so $(TEST_FILES:test/%.c=$(BINDIR)/%)
 
 $(LIBDIR)/libplugin.so: src/plugin.cpp | $(LIBDIR)
 	$(CXX) $(CXXFLAGS) -o $@ $<
 
-$(BINDIR)/Projet: test/test3.c $(LIBDIR)/libplugin.so | $(BINDIR)
+$(BINDIR)/%: test/%.c $(LIBDIR)/libplugin.so | $(BINDIR)
 	OMPI_MPICC=$(CC) $(MPICC) $< $(LDFLAGS) -o $@ -fplugin=$(LIBDIR)/libplugin.so
 
 $(LIBDIR):
