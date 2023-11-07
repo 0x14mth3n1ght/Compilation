@@ -6,7 +6,7 @@ CXXFLAGS=-I`$(CC) -print-file-name=plugin`/include -g -Wall -fno-rtti -shared -f
 LDFLAGS=-g -O3
 LIBDIR=lib
 BINDIR=bin
-DOT_FILES= $(wildcard *.dot)
+DOTDIR=dot
 TEST_FILES= $(wildcard test/*.c)
 
 .PHONY: all
@@ -27,9 +27,17 @@ $(BINDIR):
 %.png: %.dot
 	dot -Tpng $< > $@
 
-png: $(patsubst %.dot,%.png,$(DOT_FILES))
+png: $(patsubst %.dot,%.png,$(wildcard *.dot))
+
+.PHONY: pngs
+pngs: png
+	mkdir -p $(DOTDIR)
+	mv *.dot $(DOTDIR)
+	mv *.png $(DOTDIR)
 
 .PHONY: clean
 clean:
 	rm -rf $(LIBDIR)
 	rm -rf $(BINDIR)
+	rm -rf $(DOTDIR)
+	rm -f *.dot

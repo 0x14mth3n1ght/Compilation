@@ -7,9 +7,11 @@ static char* cfgviz_generate_filename(function* fun, const char* suffix)
 
     target_filename = (char*)xmalloc(2048 * sizeof(char));
 
-    snprintf(target_filename, 1024, "%s_%s_%d_%s.dot", current_function_name(),
-        LOCATION_FILE(fun->function_start_locus),
-        LOCATION_LINE(fun->function_start_locus), suffix);
+    snprintf( target_filename, 1024, "%s_%s_%d_%s.dot",
+              function_name(fun),
+              basename(LOCATION_FILE( fun->function_start_locus )),
+              LOCATION_LINE( fun->function_start_locus ),
+              suffix ) ;
 
     return target_filename;
 }

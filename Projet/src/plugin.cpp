@@ -52,12 +52,12 @@ class my_pass : public gimple_opt_pass
 			printf("PDF Basic Blocks\n");			
 			bitmap_head *frontiers = bitmap_init();
 			post_dom_frontiers(fun,frontiers);
-			//cfgviz_dump(fun,"postdomfront");
+			cfgviz_dump(fun,"postdomfront");
 
 			printf("CFG2 - Loop Removed\n");
 			bitmap_head *all_preds = bitmap_init();
 			removeloop_cfg2(fun,all_preds);
-			//cfgviz_dump(fun,"removeloop");
+			cfgviz_dump(fun,"removeloop");
 
 			//bitmap_head *all_preds = bitmap_init();
 			//bb = ENTRY_BLOCK_PTR_FOR_FN(fun)->next_bb;
