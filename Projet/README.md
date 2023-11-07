@@ -1,0 +1,59 @@
+## Rapport et présentation
+
+- Présentation: penser plus tard à **penser au client, moins technique, plus contextuel avec les démos** (live ou non)
+
+- Voir `Rapport_CA.pdf` et `pres/index.html`
+
+
+## Code et réalisation du projet
+
+- Partie (2) **pragmas** : partie faite, voir [GPT](https://chat.openai.com/share/63a3b18b-a2a8-40fc-bf02-38bdd7db5c26) pour le raisonnement
+
+Voir `test/test-mpi-foo.c`
+
+- Partie (1) **warnings** (PDF+) à finir: voir [GPT](https://chat.openai.com/share/e3b682bd-8cd2-44c2-8637-e2bf3c46a00e) pour le raisonnement
+
+### Frontière post dominance -> faite
+
+Voir `test/test-mpi-1.c`, `test/test-mpi-2.c`
+
+"1er noeud avant soi qui permet de ne pas passer par soi"
+
+- regle le probleme du
+- definir numérotation par collective
+
+```c
+if (a){
+        MPI_Barrier(...)
+}
+```
+
+### Frontière post dominance itérée -> à finir
+
+Voir `test/test-mpi-rank-allreduce.c`  `test/test-mpi-two-barriers.c`
+
+- règle ce problème (assigner un rang à chaque collective)
+
+```c
+if (a){
+        MPI_Barrier()
+        //MPI_Send()
+}
+if (b){
+        //
+}
+```
+
+```c
+if (a){
+        MPI_Barrier()
+}
+else{
+        MPI_Reduce()
+        MPI_Barrier()
+}
+```
+
+## Correction
+
+- https://gitlab.com/Nitorac/mpi-plugin-ca/
