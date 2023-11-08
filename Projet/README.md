@@ -2,6 +2,8 @@
 
 - Présentation: penser plus tard à **penser au client, moins technique, plus contextuel avec les démos** (live ou non)
 
+- Par le même occasion: pas forcément utile d'inclure les bouts de code -> se concentrer sur la théorie et les fonctionnalités
+
 - Voir `Rapport_CA.pdf` et `pres/index.html`
 
 
@@ -52,6 +54,27 @@ else{
         MPI_Reduce()
         MPI_Barrier()
 }
+```
+
+## Installer GCC12
+
+```bash
+wget https://ftp.gnu.org/gnu/gcc/gcc-12.2.0/gcc-12.2.0.tar.gz
+tar -xvf gcc-12.2.0.tar.gz
+mkdir gcc-12.2.0/build; cd gcc-12.2.0/build 
+../configure --prefix=~/gcc-12.2.0 --enable-languages=c,c++,fortran --enable-plugin --disable-bootstrap --disable-multilib
+make
+make install
+~/gcc-12.2.0/bin/gcc
+```
+
+## Remark.js to PDF
+
+https://github.com/gnab/remark/issues/50
+
+```bash
+yay -S wkhtmltopdf
+wkhtmltopdf --page-width 111 --page-height 148  -O "Landscape"  gnab.github.io/remark remark.pdf
 ```
 
 ## Correction
