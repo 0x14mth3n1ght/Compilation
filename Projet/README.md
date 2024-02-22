@@ -9,11 +9,11 @@
 
 ## Code et réalisation du projet
 
-- Partie (2) **pragmas** : partie faite, voir [GPT](https://chat.openai.com/share/63a3b18b-a2a8-40fc-bf02-38bdd7db5c26) pour le raisonnement
+- Partie (2) **pragmas** : partie faite
 
 Voir `test/test-mpi-foo.c`
 
-- Partie (1) **warnings** (PDF+) à finir: voir [GPT](https://chat.openai.com/share/e3b682bd-8cd2-44c2-8637-e2bf3c46a00e) pour le raisonnement
+- Partie (1) **warnings** (PDF+) à finir
 
 ### Frontière post dominance -> faite
 
